@@ -3,19 +3,23 @@ package com.lamzone.mareu.ui;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.lamzone.mareu.DI.DependencyInjector;
 import com.lamzone.mareu.R;
 import com.lamzone.mareu.model.Meeting;
+import com.lamzone.mareu.service.MareuApiService;
+import com.lamzone.mareu.utils.MareuUtils;
 
 import java.util.List;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
+import butterknife.internal.Utils;
 
 public class MareuRecyclerViewAdapter extends RecyclerView.Adapter<MareuRecyclerViewAdapter.mareuViewHolder> {
 
@@ -24,6 +28,7 @@ public class MareuRecyclerViewAdapter extends RecyclerView.Adapter<MareuRecycler
         ImageView avatar;
         TextView title;
         TextView subtitle;
+        ImageButton button;
 
 
         public mareuViewHolder(@NonNull View itemView) {
@@ -31,10 +36,12 @@ public class MareuRecyclerViewAdapter extends RecyclerView.Adapter<MareuRecycler
             title = itemView.findViewById(R.id.textView_meetingRecyclerViewItem_title);
             subtitle = itemView.findViewById(R.id.textView_meetingRecyclerViewItem_subTitle);
             avatar = itemView.findViewById(R.id.imageView_meetingRecyclerViewAvatar);
+            button = itemView.findViewById(R.id.imageButton_meetingRecyclerViewItem_delete);
         }
     }
 
     private final List<Meeting> rvMeetingList; //List of meetings
+    private MareuApiService apiService = DependencyInjector.getMareuApiService();
 
     /**
      * RecyclerView adapter constructor
@@ -60,12 +67,15 @@ public class MareuRecyclerViewAdapter extends RecyclerView.Adapter<MareuRecycler
     @Override
     public void onBindViewHolder(@NonNull mareuViewHolder holder, int position) {
         Meeting meeting = rvMeetingList.get(position);
-        holder.title.setText(meeting.getMeetingDisplayName());
-        holder.subtitle.setText(meeting.getParticipantsAddresses());
+        holder.title.setText(MareuUtils.getMeetingDisplayName(meeting));
+        holder.subtitle.setText(MareuUtils.getParticipantsAddresses(meeting));
         holder.avatar.setColorFilter(meeting.getRoom().getColor());
-
-        //TODO clic bouton supprimer
-
+        holder.button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                apiService.removeMeeting(meeting);
+            }
+        });
     }
 
     @Override

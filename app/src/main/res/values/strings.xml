@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">Mareu</string>
     <string name="contentDesc_imageView_MareuFragment">colored image</string>
+    <string name="add_toolbar_title">Ajouter une réunion</string>
 </resources>

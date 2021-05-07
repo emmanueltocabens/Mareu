@@ -3,34 +3,37 @@ package com.lamzone.mareu.service;
 import com.lamzone.mareu.model.Meeting;
 import com.lamzone.mareu.model.Room;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
 public class FakeMareuApiService implements MareuApiService {
 
+    private List<Meeting> meetingList = FakeMareuGenerator.FAKE_MEETINGS;
+    private List<Room> rooms = FakeMareuGenerator.FAKE_ROOMS;
 
 
     @Override
     public List<Meeting> getMeetings() {
-        return FakeMareuGenerator.FAKE_MEETINGS;
+        return meetingList;
     }
 
     @Override
     public List<Room> getAllRooms() {
-        return FakeMareuGenerator.FAKE_ROOMS;
+        return rooms;
     }
 
     @Override
-    public List<Room> getAvailableRooms(Date start, Date end) {
-        return null;
+    public void addNewMeeting(Meeting meeting) {
+        ArrayList<Meeting> arr = new ArrayList<>(meetingList);
+        arr.add(meeting);
+        meetingList = arr;
     }
 
-    public Room findRoomById(int id){
-        for(Room tmp : FakeMareuGenerator.FAKE_ROOMS){
-            if(tmp.getId() == id){
-                return tmp;
-            }
-        }
-        return null;
+    @Override
+    public void removeMeeting(Meeting meeting){
+        meetingList.remove(meeting);
     }
 }

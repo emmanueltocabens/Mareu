@@ -15,12 +15,12 @@ public class Meeting implements Serializable {
     private List<String> participants; //Personnes qui participent à la réunion
     private String title; //sujet de la réunion
 
-    public Meeting (Date starts, Date ends, Room room, List<String> participants, String subject){
+    public Meeting (Date starts, Date ends, Room room, List<String> participants, String title){
         this.startDate = starts;
         this.endDate = ends;
         this.room = room;
         this.participants = participants;
-        this.title = subject;
+        this.title = title;
     }
 
     //getters and setters
@@ -29,33 +29,39 @@ public class Meeting implements Serializable {
         return room;
     }
 
+    public Date getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(Date startDate) {
+        this.startDate = startDate;
+    }
+
+    public Date getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(Date endDate) {
+        this.endDate = endDate;
+    }
+
     public void setRoom(Room room) {
         this.room = room;
     }
 
-    public String getMeetingDisplayName(){
-        StringBuilder str = new StringBuilder();
-        Calendar.getInstance().setTime(startDate);
-        int hours = Calendar.getInstance().get(Calendar.HOUR);
-        int minutes = Calendar.getInstance().get(Calendar.MINUTE);
-        str.append(title);
-        str.append(" - ");
-        str.append(hours);
-        str.append("h");
-        str.append(minutes);
-        str.append(" - ");
-        return str.toString();
-
+    public List<String> getParticipants() {
+        return participants;
     }
 
-    public String getParticipantsAddresses(){
-        StringBuilder ret = new StringBuilder();
-        for(String tmp : participants){
-            ret.append(tmp);
-            ret.append(", ");
-        }
-        ret.deleteCharAt(ret.length()-1);
-        ret.deleteCharAt(ret.length()-1);
-        return ret.toString();
+    public void setParticipants(List<String> participants) {
+        this.participants = participants;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 }

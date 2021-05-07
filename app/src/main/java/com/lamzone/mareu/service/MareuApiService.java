@@ -21,17 +21,16 @@ public interface MareuApiService {
     public List<Room> getAllRooms();
 
     /**
-     * retourne la liste des salles disponibles
-     * @return
+     * ajoute une nouvelle réunion
+     * @param meeting
      */
-    public List<Room> getAvailableRooms(Date start, Date end);
+    public void addNewMeeting(Meeting meeting);
 
     /**
-     * returns the object Room with the specified ID
-     * @param id
-     * @return
+     * supprime une réunion existante
+     * @param meeting
      */
-    public Room findRoomById(int id);
+    public void removeMeeting(Meeting meeting);
 
 
 
