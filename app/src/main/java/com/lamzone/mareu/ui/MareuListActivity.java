@@ -3,10 +3,17 @@ package com.lamzone.mareu.ui;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageButton;
+import android.widget.PopupMenu;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.constraintlayout.utils.widget.ImageFilterButton;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -15,11 +22,8 @@ import com.lamzone.mareu.DI.DependencyInjector;
 import com.lamzone.mareu.R;
 import com.lamzone.mareu.service.MareuApiService;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
 
-public class MareuListActivity extends AppCompatActivity {
+public class MareuListActivity extends AppCompatActivity implements PopupMenu.OnMenuItemClickListener {
 
     RecyclerView mRecyclerView;
     Toolbar mToolbar;
@@ -27,8 +31,7 @@ public class MareuListActivity extends AppCompatActivity {
     MareuApiService apiService;
     MareuRecyclerViewAdapter mAdapter;
     RecyclerView.LayoutManager mLayoutManager;
-
-
+    ImageButton button;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,14 +39,17 @@ public class MareuListActivity extends AppCompatActivity {
         setContentView(R.layout.list_activity);
         //bind views + api
         mToolbar = findViewById(R.id.main_toolbar);
+        mFab = findViewById(R.id.fab_add_meeting);
+        mRecyclerView = findViewById(R.id.recyclerView);
+        button = findViewById(R.id.filter_button);
         apiService = DependencyInjector.getMareuApiService();
 
         //toolbar
-
         setSupportActionBar(mToolbar);
 
+
+
         //recyclerView
-        mRecyclerView = findViewById(R.id.recyclerView);
         mRecyclerView.setHasFixedSize(true);
 
         //layoutManager
@@ -55,7 +61,6 @@ public class MareuListActivity extends AppCompatActivity {
         mRecyclerView.setAdapter(mAdapter);
 
         //FAB
-        mFab = findViewById(R.id.fab_add_meeting);
         mFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -63,12 +68,32 @@ public class MareuListActivity extends AppCompatActivity {
                 startActivity(i);
             }
         });
-
-
-
-
-
-
     }
 
+    public void showPopup(View view) {
+        PopupMenu pop = new PopupMenu(this,button);
+        pop.setOnMenuItemClickListener(this);
+        pop.inflate(R.menu.menu_filters);
+    }
+
+    @Override
+    public boolean onMenuItemClick(MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.filter1:
+
+                return true;
+            case R.id.filter2:
+
+                return true;
+            case R.id.filter3:
+
+                return true;
+            case R.id.filter4:
+
+                return true;
+            default:
+
+                return true;
+        }
+    }
 }

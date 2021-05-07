@@ -34,7 +34,9 @@
             android:maxLength="30"
             android:maxLines="1"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/room_spinner" />
+            app:layout_constraintTop_toBottomOf="@id/room_spinner"
+            android:inputType="text"
+            android:singleLine="true"/>
 
         <EditText
             android:id="@+id/add_et_date"
@@ -82,7 +84,9 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="24dp"
             android:layout_marginEnd="16dp"
+            android:autoText="false"
             android:hint="Adresse mail"
+            android:inputType="textEmailAddress"
             app:layout_constraintEnd_toStartOf="@+id/button_add_participant"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/add_et_time_end" />
@@ -113,7 +117,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
-            android:text="Recommencer"
+            android:background="#FFFFFF"
+            android:text="Effacer"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/confirm_button"
             app:layout_constraintHorizontal_bias="0.518"
@@ -124,7 +129,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
-            android:text="Confirmer"
+            android:text="Terminer"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/clear_button" />
