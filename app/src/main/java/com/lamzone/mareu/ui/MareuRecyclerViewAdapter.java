@@ -76,7 +76,8 @@ public class MareuRecyclerViewAdapter extends RecyclerView.Adapter<MareuRecycler
         holder.button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                EventBus.getDefault().post(new DeleteMeetingEvent(meeting));
+                apiService.removeMeeting(meeting);
+                notifyDataSetChanged();
             }
         });
 

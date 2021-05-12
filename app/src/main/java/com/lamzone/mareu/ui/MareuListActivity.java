@@ -92,8 +92,6 @@ public class MareuListActivity extends AppCompatActivity implements DatePickerDi
     protected void onResume() {
         super.onResume();
         EventBus.getDefault().register(this);
-        mAdapter = new MareuRecyclerViewAdapter(apiService.getMeetings());
-        mRecyclerView.setAdapter(mAdapter);
     }
 
     @Override

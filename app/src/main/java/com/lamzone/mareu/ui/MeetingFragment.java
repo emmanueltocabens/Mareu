@@ -27,20 +27,11 @@ import java.util.List;
 
 public class MeetingFragment extends Fragment {
 
-    private MareuApiService mareuApiService;
-    private List<Meeting> mMeetings;
     private RecyclerView mRecyclerView;
-    private MareuRecyclerViewAdapter adapter;
-
-    public static MeetingFragment newInstance(){
-        MeetingFragment fragment = new MeetingFragment();
-        return fragment;
-    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mareuApiService = DependencyInjector.getMareuApiService();
     }
 
     @Nullable
@@ -52,44 +43,4 @@ public class MeetingFragment extends Fragment {
         mRecyclerView.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
         return view;
     }
-
-
-
-    private void initList(){
-        mMeetings = mareuApiService.getMeetings();
-        adapter = new MareuRecyclerViewAdapter(mMeetings);
-        mRecyclerView.setAdapter(adapter);
-    }
-
-
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        initList();
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        EventBus.getDefault().register(this);
-    }
-
-    @Override
-    public void onStop() {
-        EventBus.getDefault().unregister(this);
-        super.onStop();
-    }
-
-    /**
-     * appellé lorsque le bouton "supprimer un meeting" est utilisé
-     * @param event
-     */
-    @Subscribe
-    public void onDeleteMeeting(DeleteMeetingEvent event){
-        Toast.makeText(getContext(),"deleteButtonPressed",Toast.LENGTH_SHORT).show();
-        adapter.notifyDataSetChanged();
-        mareuApiService.removeMeeting(event.meeting);
-    }
-
 }

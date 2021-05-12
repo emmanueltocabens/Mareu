@@ -1,10 +1,8 @@
 package com.lamzone.mareu.ui;
 
 import android.app.DatePickerDialog;
-import android.app.Notification;
 import android.app.TimePickerDialog;
 import android.os.Bundle;
-import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -86,7 +84,7 @@ public class AddMeetingActivity extends AppCompatActivity implements DatePickerD
             }
         });
         et_title.setMaxLines(1);
-        setEditTextListeners();
+        setListeners();
         unlockRooms();
     }
 
@@ -169,7 +167,7 @@ public class AddMeetingActivity extends AppCompatActivity implements DatePickerD
     /**
      * Ajoute les onClickListener de tous les composants EditText
      */
-    private void setEditTextListeners(){
+    private void setListeners(){
         et_date.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
