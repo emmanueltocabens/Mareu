@@ -1,6 +1,5 @@
 package com.lamzone.mareu.ui;
 
-import android.app.ActionBar;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
@@ -15,6 +14,7 @@ import android.widget.DatePicker;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.PopupMenu;
 import androidx.fragment.app.DialogFragment;
@@ -62,8 +62,7 @@ public class MareuListActivity extends AppCompatActivity implements DatePickerDi
         apiService = DependencyInjector.getMareuApiService();
 
         //toolbar
-        actionBar = getActionBar();
-
+        actionBar = getSupportActionBar();
 
         //recyclerView
         mRecyclerView.setHasFixedSize(true);
