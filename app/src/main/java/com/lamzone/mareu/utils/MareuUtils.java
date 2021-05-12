@@ -43,6 +43,7 @@ public class MareuUtils {
             str.append("0");
         str.append(minutes);
         str.append(" - ");
+        str.append(meeting.getRoom().getName());
         return str.toString();
     }
 

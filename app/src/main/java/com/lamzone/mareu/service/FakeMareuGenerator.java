@@ -74,8 +74,8 @@ public abstract class FakeMareuGenerator {
                     "Réunion B"),
 
             new Meeting(
-                    new SmartDate(12,30).getDate(),
-                    new SmartDate(14,0).getDate(),
+                    new SmartDate(18,0).getDate(),
+                    new SmartDate(20,0).getDate(),
                     FAKE_ROOMS.get(2),
                     FAKE_USERS_3,
                     "Réunion C")
@@ -84,12 +84,12 @@ public abstract class FakeMareuGenerator {
 
 
     public static class SmartDate {
-        private Calendar calendar = Calendar.getInstance();
+        private Calendar calendar;
         private Date date;
 
         public SmartDate(int hour, int min){
             calendar = Calendar.getInstance();
-            calendar.set(Calendar.HOUR, hour);
+            calendar.set(Calendar.HOUR_OF_DAY, hour);
             calendar.set(Calendar.MINUTE, min);
             date = calendar.getTime();
         }

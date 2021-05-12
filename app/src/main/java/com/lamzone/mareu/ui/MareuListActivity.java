@@ -1,52 +1,68 @@
 package com.lamzone.mareu.ui;
 
-import android.content.Context;
+import android.app.ActionBar;
+import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ImageButton;
-import android.widget.PopupMenu;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.DatePicker;
+import android.widget.Spinner;
+import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.constraintlayout.utils.widget.ImageFilterButton;
+import androidx.appcompat.widget.PopupMenu;
+import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.lamzone.mareu.DI.DependencyInjector;
 import com.lamzone.mareu.R;
+import com.lamzone.mareu.events.RoomSelectedEvent;
+import com.lamzone.mareu.model.Room;
 import com.lamzone.mareu.service.MareuApiService;
+import com.lamzone.mareu.ui.pickers.DatePickerFragment;
+import com.lamzone.mareu.ui.pickers.RoomPickerFragment;
+import com.lamzone.mareu.ui.pickers.TimePickerFragment;
+import com.lamzone.mareu.utils.MareuUtils;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
 
 
-public class MareuListActivity extends AppCompatActivity implements PopupMenu.OnMenuItemClickListener {
+public class MareuListActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener {
 
-    RecyclerView mRecyclerView;
-    Toolbar mToolbar;
-    FloatingActionButton mFab;
-    MareuApiService apiService;
-    MareuRecyclerViewAdapter mAdapter;
-    RecyclerView.LayoutManager mLayoutManager;
-    ImageButton button;
+    private RecyclerView mRecyclerView;
+    private ActionBar actionBar;
+    private FloatingActionButton mFab;
+    private MareuApiService apiService;
+    private MareuRecyclerViewAdapter mAdapter;
+    private RecyclerView.LayoutManager mLayoutManager;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.list_activity);
         //bind views + api
-        mToolbar = findViewById(R.id.main_toolbar);
+
         mFab = findViewById(R.id.fab_add_meeting);
         mRecyclerView = findViewById(R.id.recyclerView);
-        button = findViewById(R.id.filter_button);
         apiService = DependencyInjector.getMareuApiService();
 
         //toolbar
-        setSupportActionBar(mToolbar);
-
+        actionBar = getActionBar();
 
 
         //recyclerView
@@ -56,9 +72,7 @@ public class MareuListActivity extends AppCompatActivity implements PopupMenu.On
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
 
-        //adapter
-        mAdapter = new MareuRecyclerViewAdapter(apiService.getMeetings());
-        mRecyclerView.setAdapter(mAdapter);
+        initList();
 
         //FAB
         mFab.setOnClickListener(new View.OnClickListener() {
@@ -70,30 +84,77 @@ public class MareuListActivity extends AppCompatActivity implements PopupMenu.On
         });
     }
 
-    public void showPopup(View view) {
-        PopupMenu pop = new PopupMenu(this,button);
-        pop.setOnMenuItemClickListener(this);
-        pop.inflate(R.menu.menu_filters);
+    public void initList(){
+        mAdapter = new MareuRecyclerViewAdapter(apiService.getMeetings());
+        mRecyclerView.setAdapter(mAdapter);
     }
 
     @Override
-    public boolean onMenuItemClick(MenuItem item) {
-        switch (item.getItemId()){
-            case R.id.filter1:
+    protected void onResume() {
+        super.onResume();
+        EventBus.getDefault().register(this);
+        mAdapter = new MareuRecyclerViewAdapter(apiService.getMeetings());
+        mRecyclerView.setAdapter(mAdapter);
+    }
 
-                return true;
-            case R.id.filter2:
+    @Override
+    protected void onStop() {
+        super.onStop();
+        EventBus.getDefault().unregister(this);
+    }
 
-                return true;
-            case R.id.filter3:
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_filters, menu);
+        menu.getItem(0).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                datePopup();
+                return false;
+            }
+        });
+        menu.getItem(1).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                roomPopup();
+                return false;
+            }
+        });
+        menu.getItem(2).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                mAdapter = new MareuRecyclerViewAdapter(apiService.getMeetings());
+                mRecyclerView.setAdapter(mAdapter);
+                return false;
+            }
+        });
+        return true;
+    }
 
-                return true;
-            case R.id.filter4:
+    public void datePopup(){
+        DatePickerFragment picker = new DatePickerFragment();
+        picker.show(getSupportFragmentManager(),"date_filter");
+    }
 
-                return true;
-            default:
+    public void roomPopup(){
+        DialogFragment popup = new RoomPickerFragment();
+        popup.show(getSupportFragmentManager(),"room_filter");
+    }
 
-                return true;
-        }
+    @Override
+    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+        Calendar cal = Calendar.getInstance();
+        cal.set(Calendar.YEAR,year);
+        cal.set(Calendar.MONTH,month);
+        cal.set(Calendar.DAY_OF_MONTH,dayOfMonth);
+        mAdapter = new MareuRecyclerViewAdapter(apiService.filterByDate(cal.getTime()));
+        mRecyclerView.setAdapter(mAdapter);
+    }
+
+    @Subscribe
+    public void onRoomSelectedEvent(RoomSelectedEvent event){
+        mAdapter = new MareuRecyclerViewAdapter(apiService.filterByRoom(event.room));
+        mRecyclerView.setAdapter(mAdapter);
     }
 }

@@ -14,7 +14,9 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
@@ -51,27 +53,22 @@ public class AddMeetingActivity extends AppCompatActivity implements DatePickerD
     private List<String> participants;
     private String picker;
     private LinearLayout layout_participants;
+    private ArrayAdapter<CharSequence> adapter;
+    private List<Room> displayedRooms;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.add_activity);
         apiService = DependencyInjector.getMareuApiService();
-        //link views
-        et_title = findViewById(R.id.add_et_title);
-        et_date = findViewById(R.id.add_et_date);
-        et_start = findViewById(R.id.add_et_time_start);
-        et_end = findViewById(R.id.add_et_time_end);
-        et_participants = findViewById(R.id.et_participants);
-        spinner = findViewById(R.id.room_spinner);
-        button_confirm = findViewById(R.id.confirm_button);
-        button_clear = findViewById(R.id.clear_button);
-        button_participants = findViewById(R.id.button_add_participant);
-        layout_participants = findViewById(R.id.layout_participants);
+
+        linkViews();
+
         participants = new ArrayList<>();
-        //Spinner
-        ArrayAdapter<CharSequence> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item);
-        loadData(adapter);
+        adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item);
+        displayedRooms = new ArrayList<>(apiService.getAllRooms());
+        List<String> data = MareuUtils.getRoomNames(displayedRooms);
+        adapter.addAll(data);
         spinner.setAdapter(adapter);
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -84,9 +81,82 @@ public class AddMeetingActivity extends AppCompatActivity implements DatePickerD
 
             }
         });
-
         et_title.setMaxLines(1);
+        setEditTextListeners();
+        unlockRooms();
+    }
 
+    @Override
+    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+        Calendar c = Calendar.getInstance();
+        c.set(Calendar.YEAR, year);
+        c.set(Calendar.MONTH,month);
+        c.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+        startDate = c.getTime();
+        et_date.setText(MareuUtils.getDateString(year,month,dayOfMonth));
+        unlockRooms();
+    }
+
+    @Override
+    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+        Calendar c = Calendar.getInstance();
+        c.setTime(startDate);
+        c.set(Calendar.HOUR_OF_DAY, hourOfDay);
+        c.set(Calendar.MINUTE, minute);
+        String display = MareuUtils.getTimeString(hourOfDay,minute);
+        switch(picker){
+            case "start":
+                et_start.setText(display);
+                startDate = c.getTime();
+                break;
+            case "end":
+                endDate = c.getTime();
+                et_end.setText(display);
+                break;
+            default:
+                break;
+        }
+        unlockRooms();
+    }
+
+    /**
+     * Vérifie que les champs d'addMeeting sont correctement remplis
+     * @return
+     */
+    public boolean verifyAllFieldsNotEmpty(){
+        boolean ret = true;
+        if(et_title.getText().length() == 0)
+            ret = false;
+        if(et_start.getText().length() == 0)
+            ret = false;
+        if(et_end.getText().length() == 0)
+            ret = false;
+        if(et_date.getText().length() == 0)
+            ret = false;
+        if(layout_participants.getChildCount() == 0)
+            ret = false;
+        return ret;
+    }
+
+    /**
+     * Donne accès au spinner des salles lorsque tous les champs sont remplis
+     */
+    private void unlockRooms(){
+        spinner.setEnabled(false);
+        if(et_start.getText().length() != 0 && et_end.getText().length() != 0 && et_date.getText().length() != 0) {
+            adapter.clear();
+            displayedRooms.clear();
+            displayedRooms = apiService.getAvailableRooms(startDate,endDate);
+            adapter.addAll(MareuUtils.getRoomNames(displayedRooms));
+            spinner.setAdapter(adapter); 
+            spinner.setEnabled(true);
+        }
+    }
+
+    /**
+     * Ajoute les onClickListener de tous les composants EditText
+     */
+    private void setEditTextListeners(){
         et_date.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -129,9 +199,14 @@ public class AddMeetingActivity extends AppCompatActivity implements DatePickerD
         button_confirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Meeting meeting = new Meeting(startDate,endDate,room,participants,et_title.getText().toString());
-                apiService.addNewMeeting(meeting);
-                onBackPressed();
+                if(verifyAllFieldsNotEmpty()) {
+                    Meeting meeting = new Meeting(startDate, endDate, room, participants, et_title.getText().toString());
+                    apiService.addNewMeeting(meeting);
+                    finish();
+                } else {
+                    CharSequence txt = "Tous les champs ne sont pas correctement remplis.";
+                    Toast.makeText(v.getContext(),txt,Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
@@ -147,44 +222,21 @@ public class AddMeetingActivity extends AppCompatActivity implements DatePickerD
                 et_participants.getText().clear();
             }
         });
-
-
     }
 
-    @Override
-    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-        Calendar c = Calendar.getInstance();
-        c.set(Calendar.YEAR, year);
-        c.set(Calendar.MONTH,month);
-        c.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-        startDate = c.getTime();
-        et_date.setText(MareuUtils.getDateString(year,month,dayOfMonth));
-    }
-
-    @Override
-    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-        Calendar c = Calendar.getInstance();
-        c.setTime(startDate);
-        c.set(Calendar.HOUR_OF_DAY, hourOfDay);
-        c.set(Calendar.MINUTE, minute);
-        String display = MareuUtils.getTimeString(hourOfDay,minute);
-        switch(picker){
-            case "start":
-                et_start.setText(display);
-                startDate = c.getTime();
-                break;
-            case "end":
-                endDate = c.getTime();
-                et_end.setText(display);
-                break;
-            default:
-                break;
-        }
-    }
-
-    private void loadData(ArrayAdapter<CharSequence> adapter){
-        adapter.clear();
-        List<String> data = MareuUtils.getRoomNames(apiService.getAllRooms());
-        adapter.addAll(data);
+    /**
+     * associe les vues et les variables
+     */
+    private void linkViews(){
+        et_title = findViewById(R.id.add_et_title);
+        et_date = findViewById(R.id.add_et_date);
+        et_start = findViewById(R.id.add_et_time_start);
+        et_end = findViewById(R.id.add_et_time_end);
+        et_participants = findViewById(R.id.et_participants);
+        spinner = findViewById(R.id.room_spinner);
+        button_confirm = findViewById(R.id.confirm_button);
+        button_clear = findViewById(R.id.clear_button);
+        button_participants = findViewById(R.id.button_add_participant);
+        layout_participants = findViewById(R.id.layout_participants);
     }
 }

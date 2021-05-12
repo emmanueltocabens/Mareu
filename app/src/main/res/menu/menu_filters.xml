@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-    <item android:id="@+id/filter1"
-        android:title="filter1"/>
-    <item android:id="@+id/filter2"
-        android:title="filter2"/>
-    <item android:id="@+id/filter3"
-        android:title="filter3"/>
-    <item android:id="@+id/filter4"
-        android:title="filter4"/>
+    <item android:id="@+id/filter_date"
+        android:title="Filtrer par date"
+        app:showAsAction="never"/>
+    <item android:id="@+id/filter_room"
+        android:title="Filtrer par salle"
+        app:showAsAction="never"/>
+    <item android:id="@+id/no_filter"
+        android:title="Toutes les réunions"
+        app:showAsAction="never"/>
 </menu>

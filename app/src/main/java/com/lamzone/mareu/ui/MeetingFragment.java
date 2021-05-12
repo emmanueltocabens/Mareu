@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -15,17 +16,21 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.lamzone.mareu.DI.DependencyInjector;
 import com.lamzone.mareu.R;
+import com.lamzone.mareu.events.DeleteMeetingEvent;
 import com.lamzone.mareu.model.Meeting;
 import com.lamzone.mareu.service.MareuApiService;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import java.util.List;
 
 public class MeetingFragment extends Fragment {
 
-    private Button button;
     private MareuApiService mareuApiService;
     private List<Meeting> mMeetings;
     private RecyclerView mRecyclerView;
+    private MareuRecyclerViewAdapter adapter;
 
     public static MeetingFragment newInstance(){
         MeetingFragment fragment = new MeetingFragment();
@@ -52,14 +57,11 @@ public class MeetingFragment extends Fragment {
 
     private void initList(){
         mMeetings = mareuApiService.getMeetings();
-        mRecyclerView.setAdapter(new MareuRecyclerViewAdapter(mMeetings));
+        adapter = new MareuRecyclerViewAdapter(mMeetings);
+        mRecyclerView.setAdapter(adapter);
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-        //TODO
-    }
+
 
     @Override
     public void onResume() {
@@ -68,16 +70,26 @@ public class MeetingFragment extends Fragment {
     }
 
     @Override
-    public void onPause() {
-        super.onPause();
-        //TODO
+    public void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(this);
     }
 
     @Override
     public void onStop() {
+        EventBus.getDefault().unregister(this);
         super.onStop();
-        //TODO
     }
 
+    /**
+     * appellé lorsque le bouton "supprimer un meeting" est utilisé
+     * @param event
+     */
+    @Subscribe
+    public void onDeleteMeeting(DeleteMeetingEvent event){
+        Toast.makeText(getContext(),"deleteButtonPressed",Toast.LENGTH_SHORT).show();
+        adapter.notifyDataSetChanged();
+        mareuApiService.removeMeeting(event.meeting);
+    }
 
 }

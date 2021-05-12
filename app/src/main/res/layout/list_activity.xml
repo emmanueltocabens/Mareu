@@ -6,32 +6,28 @@
     android:layout_height="match_parent"
     tools:context=".ui.MareuListActivity">
 
-    <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/main_appBar"
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/list_toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <include layout="@layout/toolbar_layout"
-            android:id="@+id/main_toolbar"/>
-
-
-    </com.google.android.material.appbar.AppBarLayout>
+        app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:name="com.lamzone.mareu.ui.MeetingListElementFragment"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        tools:context=".ui.MeetingFragment"
-        android:orientation="vertical"
-
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
 
-        app:layout_constraintTop_toBottomOf="@id/main_appBar"
-        app:layout_constraintStart_toStartOf="parent"
+        android:orientation="vertical"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
 
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/list_toolbar"
+
+        tools:context=".ui.MeetingFragment"
         tools:listitem="@layout/meeting_fragment" />
 
 

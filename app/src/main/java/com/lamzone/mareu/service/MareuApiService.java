@@ -32,6 +32,27 @@ public interface MareuApiService {
      */
     public void removeMeeting(Meeting meeting);
 
+    /**
+     * renvoie une liste filtrée des réunions qui ont lien dans la salle Room
+     * @param room
+     * @return
+     */
+    public List<Meeting> filterByRoom(Room room);
+
+    /**
+     * retourne une liste filtrée des réunions qui ont lieu pendant le créneau start-end
+     * @param date
+     * @return
+     */
+    public List<Meeting> filterByDate(Date date);
+
+    /**
+     * Retourne une liste filtrée des salles disponibles pendant le créneau start-end
+     * @param start
+     * @param end
+     * @return
+     */
+    public List<Room> getAvailableRooms (Date start, Date end);
 
 
 }

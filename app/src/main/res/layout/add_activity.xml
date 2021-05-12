@@ -6,37 +6,26 @@
     android:layout_height="match_parent">
 
         <androidx.appcompat.widget.Toolbar
-            android:id="@+id/add_toolbar"
-            android:layout_width="0dp"
+            android:id="@+id/toolbar_add"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="?attr/colorPrimary"
             android:minHeight="?attr/actionBarSize"
             android:theme="?attr/actionBarTheme"
-            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:title="@string/add_toolbar_title"
-            app:titleTextColor="#FFFFFF" />
-
-        <Spinner
-            android:id="@+id/room_spinner"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/add_toolbar" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <EditText
             android:id="@+id/add_et_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Intitulé de la réunion"
+            android:inputType="text"
             android:maxLength="30"
             android:maxLines="1"
+            android:singleLine="true"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/room_spinner"
-            android:inputType="text"
-            android:singleLine="true"/>
+            app:layout_constraintTop_toBottomOf="@id/toolbar_add" />
 
         <EditText
             android:id="@+id/add_et_date"
@@ -84,7 +73,6 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="24dp"
             android:layout_marginEnd="16dp"
-            android:autoText="false"
             android:hint="Adresse mail"
             android:inputType="textEmailAddress"
             app:layout_constraintEnd_toStartOf="@+id/button_add_participant"
@@ -107,21 +95,32 @@
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"
             android:orientation="vertical"
-            app:layout_constraintBottom_toTopOf="@id/confirm_button"
+            app:layout_constraintBottom_toTopOf="@id/room_spinner"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/et_participants" />
+            app:layout_constraintTop_toBottomOf="@+id/et_participants">
+
+        </LinearLayout>
 
         <Button
             android:id="@+id/clear_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
             android:background="#FFFFFF"
             android:text="Effacer"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toBottomOf="@+id/confirm_button"
             app:layout_constraintEnd_toStartOf="@+id/confirm_button"
             app:layout_constraintHorizontal_bias="0.518"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/confirm_button" />
+
+        <Spinner
+            android:id="@+id/room_spinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            app:layout_constraintBottom_toTopOf="@+id/clear_button"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
 
         <Button
