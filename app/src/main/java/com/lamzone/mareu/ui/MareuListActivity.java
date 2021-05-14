@@ -151,6 +151,7 @@ public class MareuListActivity extends AppCompatActivity implements DatePickerDi
 
     @Subscribe
     public void onRoomSelectedEvent(RoomSelectedEvent event){
+        mAdapter.notifyDataSetChanged();
         mAdapter = new MareuRecyclerViewAdapter(apiService.filterByRoom(event.room));
         mRecyclerView.setAdapter(mAdapter);
     }
