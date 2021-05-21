@@ -3,14 +3,24 @@ package com.lamzone.mareu.utils;
 import com.lamzone.mareu.model.Meeting;
 import com.lamzone.mareu.model.Room;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class MareuUtils {
 
+    final Locale realLoc = Locale.getDefault();
+    final static Locale fakeLoc = Locale.FRANCE;
+    static final String DATE_FORMAT_TIME = "HH:mm";
+    static final String DATE_FORMAT_DATE = "dd-MM-yyyy";
+
     /**
-     * retourne une liste des noms des salles disponibles
+     * returns a list of all room names
+     * used for display in spinners
      * @param roomList
      * @return
      */
@@ -23,7 +33,8 @@ public class MareuUtils {
     }
 
     /**
-     * retourne un nom d'affichage pour la réunion donnée
+     * returns a string for the given meeting
+     * used for display in recyclerview elements
      * @param meeting
      * @return
      */
@@ -31,24 +42,17 @@ public class MareuUtils {
         StringBuilder str = new StringBuilder();
         Calendar c = Calendar.getInstance();
         c.setTime(meeting.getStartDate());
-        int hours = c.get(Calendar.HOUR_OF_DAY);
-        int minutes = c.get(Calendar.MINUTE);
         str.append(meeting.getTitle());
         str.append(" - ");
-        if(hours < 10)
-            str.append("0");
-        str.append(hours);
-        str.append("h");
-        if(minutes < 10)
-            str.append("0");
-        str.append(minutes);
+        str.append(getTimeString(c.getTime()));
         str.append(" - ");
         str.append(meeting.getRoom().getName());
         return str.toString();
     }
 
     /**
-     * retourne les adresses mails des participants pour les afficher
+     * returns a string containing all participants mail addresses.
+     * used for display.
      * @return
      */
     public static String getParticipantsAddresses(Meeting meeting){
@@ -62,29 +66,31 @@ public class MareuUtils {
         return ret.toString();
     }
 
-    public static String getDateString(int year, int month, int dayOfMonth){
-
+    /**
+     * returns a string using the static value DATE_FORMAT_DATE format for the given date.
+     * used for display.
+     */
+    public static String getDateString(Date date){
         StringBuilder sb = new StringBuilder();
-        if(dayOfMonth<10)
-            sb.append("0");
-        sb.append(dayOfMonth);
-        sb.append("/");
-        if(month<10)
-            sb.append("0");
-        sb.append(month);
-        sb.append("/");
-        sb.append(year);
+        DateFormat format = new SimpleDateFormat(DATE_FORMAT_DATE, fakeLoc);
+        Calendar c = Calendar.getInstance();
+        c.setTime(date);
+        sb.append(format.format(c.getTime()));
         return sb.toString();
     }
 
-    public static String getTimeString(int hourOfDay, int minute){
+    /**
+     * returns a string using the static value DATE_FORMAT_TIME format for the given date.
+     * used for display.
+     * @param date
+     * @return
+     */
+    public static String getTimeString(Date date){
         StringBuilder ret =  new StringBuilder();
-        if(hourOfDay < 10)
-            ret.append("0");
-        ret.append(hourOfDay).append(":");
-        if(minute < 10)
-            ret.append("0");
-        ret.append(minute);
+        Calendar c = Calendar.getInstance();
+        c.setTime(date);
+        DateFormat format = new SimpleDateFormat(DATE_FORMAT_TIME, fakeLoc);
+        ret.append(format.format(c.getTime()));
         return ret.toString();
     }
 }

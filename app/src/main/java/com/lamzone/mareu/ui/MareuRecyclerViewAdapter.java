@@ -54,9 +54,6 @@ public class MareuRecyclerViewAdapter extends RecyclerView.Adapter<MareuRecycler
         rvMeetingList = meetings;
     }
 
-    /**
-     * inflate recyclerview fragments
-     */
     @Override
     public MareuViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater
@@ -66,7 +63,6 @@ public class MareuRecyclerViewAdapter extends RecyclerView.Adapter<MareuRecycler
         return new MareuViewHolder(view);
     }
 
-    
     @Override
     public void onBindViewHolder(@NonNull MareuViewHolder holder, int position) {
         Meeting meeting = rvMeetingList.get(position);

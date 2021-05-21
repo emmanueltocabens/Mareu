@@ -9,45 +9,45 @@ import java.util.List;
 public interface MareuApiService {
 
     /**
-     * retourne la liste des réunions
+     * returns the unfiltered list of all meetings
      * @return
      */
-    public List<Meeting> getMeetings();
+    public List<Meeting> getAllMeetings();
 
     /**
-     * retourne la liste de toutes les salles
+     * returns a list of all rooms
      * @return
      */
     public List<Room> getAllRooms();
 
     /**
-     * ajoute une nouvelle réunion
+     * adds a meeting
      * @param meeting
      */
     public void addNewMeeting(Meeting meeting);
 
     /**
-     * supprime une réunion existante
+     * deletes a meeting
      * @param meeting
      */
     public void removeMeeting(Meeting meeting);
 
     /**
-     * renvoie une liste filtrée des réunions qui ont lien dans la salle Room
+     * returns a filtered list of meetings for the given room
      * @param room
      * @return
      */
     public List<Meeting> filterByRoom(Room room);
 
     /**
-     * retourne une liste filtrée des réunions qui ont lieu pendant le créneau start-end
+     * returns a filtered list of meetings for the given date
      * @param date
      * @return
      */
     public List<Meeting> filterByDate(Date date);
 
     /**
-     * Retourne une liste filtrée des salles disponibles pendant le créneau start-end
+     * returns a list of all available rooms for the given time interval
      * @param start
      * @param end
      * @return

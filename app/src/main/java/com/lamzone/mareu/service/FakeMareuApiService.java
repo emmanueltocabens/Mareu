@@ -3,9 +3,7 @@ package com.lamzone.mareu.service;
 import com.lamzone.mareu.model.Meeting;
 import com.lamzone.mareu.model.Room;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -16,9 +14,8 @@ public class FakeMareuApiService implements MareuApiService {
     private ArrayList<Meeting> filtered_meetingList = new ArrayList<>(FakeMareuGenerator.FAKE_MEETINGS);
     private ArrayList<Room> rooms = new ArrayList<>(FakeMareuGenerator.FAKE_ROOMS);
 
-
     @Override
-    public List<Meeting> getMeetings() {
+    public List<Meeting> getAllMeetings() {
         return meetingList;
     }
 
@@ -67,7 +64,7 @@ public class FakeMareuApiService implements MareuApiService {
     @Override
     public List<Room> getAvailableRooms(Date start, Date end){
         List<Room> ret = new ArrayList<>(getAllRooms());
-        for(Meeting tmp : getMeetings()){
+        for(Meeting tmp : getAllMeetings()){
             if(tmp.getStartDate().before(start) || tmp.getEndDate().before(end)){
                 ret.remove(tmp.getRoom());
             }

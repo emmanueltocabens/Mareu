@@ -60,16 +60,19 @@ public class AddMeetingActivity extends AppCompatActivity implements DatePickerD
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //init all variables
         setContentView(R.layout.add_activity);
         apiService = DependencyInjector.getMareuApiService();
-        ActionBar actionBar = getSupportActionBar();
-        actionBar.setDisplayHomeAsUpEnabled(true);
-        linkViews();
-
         participants = new ArrayList<>();
         adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item);
         displayedRooms = new ArrayList<>(apiService.getAllRooms());
         List<String> data = MareuUtils.getRoomNames(displayedRooms);
+        ActionBar actionBar = getSupportActionBar();
+        linkViews();
+
+        actionBar.setDisplayHomeAsUpEnabled(true);
+
+        //create spinner
         adapter.addAll(data);
         spinner.setAdapter(adapter);
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -95,7 +98,7 @@ public class AddMeetingActivity extends AppCompatActivity implements DatePickerD
         c.set(Calendar.MONTH,month);
         c.set(Calendar.DAY_OF_MONTH, dayOfMonth);
         startDate = c.getTime();
-        et_date.setText(MareuUtils.getDateString(year,month,dayOfMonth));
+        et_date.setText(MareuUtils.getDateString(c.getTime()));
         unlockRooms();
     }
 
@@ -105,7 +108,7 @@ public class AddMeetingActivity extends AppCompatActivity implements DatePickerD
         c.setTime(startDate);
         c.set(Calendar.HOUR_OF_DAY, hourOfDay);
         c.set(Calendar.MINUTE, minute);
-        String display = MareuUtils.getTimeString(hourOfDay,minute);
+        String display = MareuUtils.getTimeString(c.getTime());
         switch(picker){
             case "start":
                 et_start.setText(display);
@@ -131,10 +134,10 @@ public class AddMeetingActivity extends AppCompatActivity implements DatePickerD
     }
 
     /**
-     * Vérifie que les champs d'addMeeting sont correctement remplis
+     * checks if all fields are filled correctly
      * @return
      */
-    public boolean verifyAllFieldsNotEmpty(){
+    public boolean areAllFieldsFilledCorrectly(){
         boolean ret = true;
         if(et_title.getText().length() == 0)
             ret = false;
@@ -144,13 +147,15 @@ public class AddMeetingActivity extends AppCompatActivity implements DatePickerD
             ret = false;
         if(et_date.getText().length() == 0)
             ret = false;
-        if(layout_participants.getChildCount() == 0)
+        if(layout_participants.getChildCount() < 2)
+            ret = false;
+        if(startDate.after(endDate))
             ret = false;
         return ret;
     }
 
     /**
-     * Donne accès au spinner des salles lorsque tous les champs sont remplis
+     * if all the fields are correctly filled, unlocks the room spinner, else locks the spinner
      */
     private void unlockRooms(){
         spinner.setEnabled(false);
@@ -165,7 +170,7 @@ public class AddMeetingActivity extends AppCompatActivity implements DatePickerD
     }
 
     /**
-     * Ajoute les onClickListener de tous les composants EditText
+     * adds onClickListener on all components
      */
     private void setListeners(){
         et_date.setOnClickListener(new View.OnClickListener() {
@@ -210,7 +215,7 @@ public class AddMeetingActivity extends AppCompatActivity implements DatePickerD
         button_confirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(verifyAllFieldsNotEmpty()) {
+                if(areAllFieldsFilledCorrectly()) {
                     Meeting meeting = new Meeting(startDate, endDate, room, participants, et_title.getText().toString());
                     apiService.addNewMeeting(meeting);
                     finish();
@@ -236,7 +241,7 @@ public class AddMeetingActivity extends AppCompatActivity implements DatePickerD
     }
 
     /**
-     * associe les vues et les variables
+     * link views and variables
      */
     private void linkViews(){
         et_title = findViewById(R.id.add_et_title);

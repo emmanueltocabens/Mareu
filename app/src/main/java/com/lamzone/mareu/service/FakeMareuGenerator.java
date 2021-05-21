@@ -60,34 +60,68 @@ public abstract class FakeMareuGenerator {
 
     public static List<Meeting> FAKE_MEETINGS = Arrays.asList(
             new Meeting(
-                    new SmartDate(9,30).getDate(),
-                    new SmartDate(12,0).getDate(),
+                    makeNewDate(9,0),
+                    makeNewDate(10,0),
                     FAKE_ROOMS.get(0),
                     FAKE_USERS_1,
                     "Réunion A"),
 
             new Meeting(
-                    new SmartDate(14,0).getDate(),
-                    new SmartDate(16,0).getDate(),
+                    makeNewDate(13,30),
+                    makeNewDate(14,0),
                     FAKE_ROOMS.get(1),
                     FAKE_USERS_2,
                     "Réunion B"),
 
             new Meeting(
-                    new SmartDate(18,0).getDate(),
-                    new SmartDate(20,0).getDate(),
+                    makeNewDate(10,0),
+                    makeNewDate(12,0),
                     FAKE_ROOMS.get(2),
                     FAKE_USERS_3,
-                    "Réunion C")
+                    "Réunion C"),
+
+            new Meeting(
+                    makeNewDate(10,0),
+                    makeNewDate(11,0),
+                    FAKE_ROOMS.get(0),
+                    FAKE_USERS_1,
+                    "Réunion D"),
+
+            new Meeting(
+                    makeNewDate(16,0),
+                    makeNewDate(17,0),
+                    FAKE_ROOMS.get(1),
+                    FAKE_USERS_2,
+                    "Réunion E"),
+
+            new Meeting(
+                    makeNewDate(16,0),
+                    makeNewDate(17,0),
+                    FAKE_ROOMS.get(2),
+                    FAKE_USERS_3,
+                    "Réunion F")
     );
 
 
+    /**
+     * creates a new Date object using current date and the given hour/min
+     * @param hour
+     * @param min
+     * @return
+     * used for fake data entries
+     */
+    private static Date makeNewDate(int hour, int min){
+        Calendar c = Calendar.getInstance();
+        c.set(Calendar.HOUR_OF_DAY, hour);
+        c.set(Calendar.MINUTE, min);
+        return c.getTime();
+    }
 
-    public static class SmartDate {
-        private Calendar calendar;
-        private Date date;
+    public static class testDate {
+        private final Calendar calendar;
+        private final Date date;
 
-        public SmartDate(int hour, int min){
+        public testDate(int hour, int min){
             calendar = Calendar.getInstance();
             calendar.set(Calendar.HOUR_OF_DAY, hour);
             calendar.set(Calendar.MINUTE, min);
