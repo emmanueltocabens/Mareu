@@ -234,6 +234,8 @@ public class AddMeetingActivity extends AppCompatActivity implements DatePickerD
                 TextView tv = new TextView(v.getContext());
                 tv.setText(s);
                 tv.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,LinearLayout.LayoutParams.WRAP_CONTENT));
+                tv.setPadding(8,8,8,8);
+
                 layout_participants.addView(tv);
                 et_participants.getText().clear();
             }
