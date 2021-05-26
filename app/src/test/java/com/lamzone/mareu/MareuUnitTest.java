@@ -13,6 +13,7 @@ import org.junit.Test;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import static org.junit.Assert.*;
@@ -85,7 +86,6 @@ public class MareuUnitTest {
         List<Meeting> testList = apiService.getAllMeetings();
         Meeting unexpected = testList.get(0);
         apiService.removeMeeting(unexpected);
-        testList = apiService.getAllMeetings();
         assertFalse(apiService.getAllMeetings().contains(unexpected));
     }
 
@@ -106,7 +106,7 @@ public class MareuUnitTest {
 
     /**
      * test for date filter
-     * filters meetings for tomorrow, verifies there is none, then adds 2, then asserts that both are in the list
+     * filters meetings for tomorrow, verifies there is none, then adds 2, then asserts that only these 2 are in the list
      */
     @Test
     public void filterByDateTest(){
@@ -131,13 +131,25 @@ public class MareuUnitTest {
         testList = apiService.filterByDate(c.getTime());
         assertTrue(testList.contains(tmp1));
         assertTrue(testList.contains(tmp2));
+        assertEquals(testList.size(),2);
     }
 
     /**
-     *
+     * Gets available rooms in the next hour, adds a new meeting at this interval in the first room of the list to the api,
+     * then checks if list decreased by one and if the room is still in the list
      */
     @Test
     public void getAvailableRoomsTest(){
-
+        Calendar c = Calendar.getInstance();
+        Date date1 = c.getTime();
+        c.add(Calendar.HOUR,1);
+        Date date2 = c.getTime();
+        List<Room> testList = new ArrayList<>(apiService.getAvailableRooms(date1,date2));
+        Room room = testList.get(0);
+        int size = testList.size();
+        apiService.addNewMeeting(new Meeting(date1,date2,room,Arrays.asList("","",""),"test"));
+        testList = new ArrayList<>(apiService.getAvailableRooms(date1,date2));
+        assertEquals(testList.size(),size-1);
+        assertFalse(testList.contains(room));
     }
 }

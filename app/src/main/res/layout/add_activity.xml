@@ -84,6 +84,7 @@
             android:layout_height="0dp"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"
+            android:layout_marginLeft="16dp"
             android:orientation="vertical"
             app:layout_constraintBottom_toTopOf="@id/room_spinner"
             app:layout_constraintEnd_toEndOf="parent"

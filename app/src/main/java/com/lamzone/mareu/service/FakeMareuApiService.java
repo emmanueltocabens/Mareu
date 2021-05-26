@@ -65,7 +65,7 @@ public class FakeMareuApiService implements MareuApiService {
     public List<Room> getAvailableRooms(Date start, Date end){
         List<Room> ret = new ArrayList<>(getAllRooms());
         for(Meeting tmp : getAllMeetings()){
-            if(tmp.getStartDate().before(start) || tmp.getEndDate().before(end)){
+            if(tmp.getStartDate().before(start) || tmp.getStartDate().equals(start) || tmp.getEndDate().before(end)){
                 ret.remove(tmp.getRoom());
             }
         }

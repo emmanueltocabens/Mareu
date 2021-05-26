@@ -89,29 +89,25 @@ public class MareuListActivity extends AppCompatActivity implements DatePickerDi
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_filters, menu);
-        menu.getItem(0).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle item selection
+        switch (item.getItemId()) {
+            case R.id.filter_date:
                 datePopup();
                 return false;
-            }
-        });
-        menu.getItem(1).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
+            case R.id.filter_room:
                 roomPopup();
-                return false;
-            }
-        });
-        menu.getItem(2).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
+                return true;
+            case R.id.no_filter:
                 mAdapter = new MareuRecyclerViewAdapter(apiService.getAllMeetings());
                 mRecyclerView.setAdapter(mAdapter);
-                return false;
-            }
-        });
-        return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     /**
