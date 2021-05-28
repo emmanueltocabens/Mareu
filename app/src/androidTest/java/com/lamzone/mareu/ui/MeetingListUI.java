@@ -26,6 +26,7 @@ import static androidx.test.espresso.matcher.ViewMatchers.withContentDescription
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withParent;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
+import static com.lamzone.mareu.utils.UItestUtils.childAtPosition;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.is;
 
@@ -61,9 +62,15 @@ public class MeetingListUI {
     }
 
     @Test
-    public void checkIfRecyclerViewIsFilled(){
+    public void recyclerViewCorrectSize(){
         onView(ViewMatchers.withId(R.id.recyclerView))
                 .check(new RecyclerViewUtils.ItemCount(currentMeetingSize));
+    }
+
+    @Test
+    public void navigateToAddMeetingIsWorking(){
+        onView(withId(R.id.fab_add_meeting)).perform(ViewActions.click());
+        onView(withId(R.id.add_et_title)).check(ViewAssertions.matches(ViewMatchers.isDisplayed()));
     }
 
     //créé par espresso
@@ -100,32 +107,6 @@ public class MeetingListUI {
         materialButton.perform(scrollTo(), click());
     }
 
-    @Test
-    public void navigateToAddMeetingIsWorking(){
-        onView(withId(R.id.fab_add_meeting)).perform(ViewActions.click());
-        onView(withId(R.id.add_et_title)).check(ViewAssertions.matches(ViewMatchers.isDisplayed()));
-    }
 
 
-    /**
-     * généré par espresso
-     */
-    private static Matcher<View> childAtPosition(
-            final Matcher<View> parentMatcher, final int position) {
-
-        return new TypeSafeMatcher<View>() {
-            @Override
-            public void describeTo(Description description) {
-                description.appendText("Child at position " + position + " in parent ");
-                parentMatcher.describeTo(description);
-            }
-
-            @Override
-            public boolean matchesSafely(View view) {
-                ViewParent parent = view.getParent();
-                return parent instanceof ViewGroup && parentMatcher.matches(parent)
-                        && view.equals(((ViewGroup) parent).getChildAt(position));
-            }
-        };
-    }
 }
