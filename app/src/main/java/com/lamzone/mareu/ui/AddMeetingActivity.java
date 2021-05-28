@@ -137,19 +137,21 @@ public class AddMeetingActivity extends AppCompatActivity implements DatePickerD
      * checks if all fields are filled correctly
      * @return
      */
-    public boolean areAllFieldsFilledCorrectly(){
+    public boolean areAllFieldsFilledCorrectly() {
         boolean ret = true;
-        if(et_title.getText().length() == 0)
+        if (et_title.getText().length() == 0)
             ret = false;
-        if(et_start.getText().length() == 0)
+        if (et_start.getText().length() == 0)
             ret = false;
-        if(et_end.getText().length() == 0)
+        if (et_end.getText().length() == 0)
             ret = false;
-        if(et_date.getText().length() == 0)
+        if (et_date.getText().length() == 0)
             ret = false;
-        if(layout_participants.getChildCount() < 2)
+        if (layout_participants.getChildCount() < 2)
             ret = false;
-        if(startDate.after(endDate))
+        if (startDate == null || endDate == null) {
+            ret = false;
+        } else if (startDate.after(endDate))
             ret = false;
         return ret;
     }
@@ -248,7 +250,7 @@ public class AddMeetingActivity extends AppCompatActivity implements DatePickerD
         et_date = findViewById(R.id.add_et_date);
         et_start = findViewById(R.id.add_et_time_start);
         et_end = findViewById(R.id.add_et_time_end);
-        et_participants = findViewById(R.id.et_participants);
+        et_participants = findViewById(R.id.add_et_participants);
         spinner = findViewById(R.id.room_spinner);
         button_confirm = findViewById(R.id.confirm_button);
         button_clear = findViewById(R.id.clear_button);
