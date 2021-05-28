@@ -77,7 +77,9 @@ public class MeetingListUI {
     @Test
     public void dateFilterIsWorking(){
 
-        ViewInteraction overflowMenuButton = onView(
+        onView(withContentDescription("More options")).perform(click());
+
+        /*ViewInteraction overflowMenuButton = onView(
                 allOf(withContentDescription("More options"),
                         childAtPosition(
                                 childAtPosition(
@@ -85,7 +87,7 @@ public class MeetingListUI {
                                         1),
                                 0),
                         isDisplayed()));
-        overflowMenuButton.perform(click());
+        overflowMenuButton.perform(click());*/
 
         ViewInteraction materialTextView = onView(
                 allOf(withId(R.id.title), withText("Filtrer par date"),
@@ -97,6 +99,8 @@ public class MeetingListUI {
                         isDisplayed()));
         materialTextView.perform(click());
 
+        onView(withId(android.R.id.button1)).perform(ViewActions.click());
+/*
         ViewInteraction materialButton = onView(
                 allOf(withId(android.R.id.button1), withText("OK"),
                         childAtPosition(
@@ -104,7 +108,52 @@ public class MeetingListUI {
                                         withClassName(is("android.widget.ScrollView")),
                                         0),
                                 3)));
-        materialButton.perform(scrollTo(), click());
+        materialButton.perform(scrollTo(), click());*/
+    }
+
+    @Test
+    public void roomFilterIsWorking(){
+        ViewInteraction overflowMenuButton = onView(
+                allOf(withContentDescription("More options"),
+                        childAtPosition(
+                                childAtPosition(
+                                        withId(R.id.action_bar),
+                                        1),
+                                0),
+                        isDisplayed()));
+        overflowMenuButton.perform(click());
+
+        ViewInteraction materialTextView = onView(
+                allOf(withId(R.id.title), withText("Filtrer par salle"),
+                        childAtPosition(
+                                childAtPosition(
+                                        withId(R.id.content),
+                                        0),
+                                0),
+                        isDisplayed()));
+        materialTextView.perform(click());
+    }
+
+    public void no_filterIsWorking(){
+        ViewInteraction overflowMenuButton = onView(
+                allOf(withContentDescription("More options"),
+                        childAtPosition(
+                                childAtPosition(
+                                        withId(R.id.action_bar),
+                                        1),
+                                0),
+                        isDisplayed()));
+        overflowMenuButton.perform(click());
+
+        ViewInteraction materialTextView = onView(
+                allOf(withId(R.id.title), withText("Toutes les réunions"),
+                        childAtPosition(
+                                childAtPosition(
+                                        withId(R.id.content),
+                                        0),
+                                0),
+                        isDisplayed()));
+        materialTextView.perform(click());
     }
 
 

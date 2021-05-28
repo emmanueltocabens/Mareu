@@ -3,4 +3,12 @@
     <string name="contentDesc_imageView_MareuFragment">colored image</string>
     <string name="add_toolbar_title">Ajouter une réunion</string>
     <string name="dialog_room_title">Choisir une salle</string>
+    <string name="et_title_hint">Intitulé de la réunion</string>
+    <string name="et_date_hint">date de la réunion</string>
+    <string name="et_start_hint">heure de début</string>
+    <string name="et_end_hint">heure de fin</string>
+    <string name="et_participant_hint">Adresse mail</string>
+    <string name="text_button_add_participant">Ajouter</string>
+    <string name="text_button_clear">Effacer</string>
+    <string name="text_button_confirm">Terminer</string>
 </resources>

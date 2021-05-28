@@ -18,6 +18,7 @@ import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
 import static androidx.test.espresso.Espresso.onView;
+import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 
 @RunWith(AndroidJUnit4.class)
@@ -38,9 +39,9 @@ public class addMeetingUI {
     @Test
     public void addParticipantsTest(){
         onView(withId(R.id.add_et_participants)).perform(ViewActions.typeText("participant@somemail.com"));
-        onView(withId(R.id.button_add_participant)).perform(ViewActions.click());
+        onView(withId(R.id.button_add_participant)).perform(click());
         onView(withId(R.id.add_et_participants)).perform(ViewActions.typeText("anotherparticipant@somemail.com"));
-        onView(withId(R.id.button_add_participant)).perform(ViewActions.click());
+        onView(withId(R.id.button_add_participant)).perform(click());
         onView(withId(R.id.layout_participants)).check(ViewAssertions.matches(ViewMatchers.hasChildCount(2)));
     }
 
@@ -48,14 +49,15 @@ public class addMeetingUI {
     public void addNewMeetingTest(){
         onView(withId(R.id.add_et_title)).perform(ViewActions.typeText("Test meeting title"));
 
-        onView(withId(R.id.add_et_date)).perform(ViewActions.click());
+        onView(withId(R.id.add_et_date)).perform(click());
+        onView(withId(android.R.id.button1)).perform(click());
 
 
         onView(withId(R.id.add_et_participants)).perform(ViewActions.typeText("participant1@somemail.com"));
-        onView(withId(R.id.button_add_participant)).perform(ViewActions.click());
+        onView(withId(R.id.button_add_participant)).perform(click());
         onView(withId(R.id.add_et_participants)).perform(ViewActions.typeText("participant2@somemail.com"));
-        onView(withId(R.id.button_add_participant)).perform(ViewActions.click());
+        onView(withId(R.id.button_add_participant)).perform(click());
         onView(withId(R.id.add_et_participants)).perform(ViewActions.typeText("participant3@somemail.com"));
-        onView(withId(R.id.button_add_participant)).perform(ViewActions.click());
+        onView(withId(R.id.button_add_participant)).perform(click());
     }
 }

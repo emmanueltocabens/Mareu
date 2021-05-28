@@ -9,11 +9,13 @@
             android:id="@+id/add_et_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
             android:hint="@string/et_title_hint"
             android:inputType="text"
             android:maxLength="30"
             android:maxLines="1"
             android:singleLine="true"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -21,8 +23,8 @@
             android:id="@+id/add_et_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
             android:ems="10"
             android:focusable="false"
             android:hint="@string/et_date_hint"
@@ -34,12 +36,12 @@
             android:id="@+id/add_et_time_start"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginStart="8dp"
             android:ems="10"
             android:focusable="false"
             android:hint="@string/et_start_hint"
             android:inputType="time"
+            app:layout_constraintEnd_toEndOf="@+id/add_et_date"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/add_et_date" />
 
@@ -47,33 +49,33 @@
             android:id="@+id/add_et_time_end"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
             android:ems="10"
             android:focusable="false"
             android:hint="@string/et_end_hint"
             android:inputType="time"
+            app:layout_constraintEnd_toEndOf="@+id/add_et_time_start"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/add_et_time_start" />
 
         <EditText
             android:id="@+id/add_et_participants"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="24dp"
-            android:layout_marginEnd="16dp"
+            android:layout_height="46dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
             android:hint="@string/et_participant_hint"
             android:inputType="textEmailAddress"
             app:layout_constraintEnd_toStartOf="@+id/button_add_participant"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/add_et_time_end" />
+            app:layout_constraintStart_toEndOf="@+id/add_et_date"
+            app:layout_constraintTop_toTopOf="@+id/add_et_date" />
 
         <Button
             android:id="@+id/button_add_participant"
-            android:layout_width="0dp"
+            android:layout_width="103dp"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="16dp"
+            android:layout_marginEnd="8dp"
             android:text="@string/text_button_add_participant"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/add_et_participants" />
@@ -81,14 +83,10 @@
         <LinearLayout
             android:id="@+id/layout_participants"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
-            android:layout_marginStart="16dp"
+            android:layout_height="11dp"
             android:orientation="vertical"
-            app:layout_constraintBottom_toTopOf="@id/room_spinner"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/add_et_participants"
             app:layout_constraintTop_toBottomOf="@+id/add_et_participants">
 
         </LinearLayout>
@@ -97,15 +95,15 @@
             android:id="@+id/clear_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
             android:text="@string/text_button_clear"
-            app:layout_constraintBottom_toBottomOf="@+id/confirm_button"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/confirm_button"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/confirm_button" />
+            app:layout_constraintStart_toStartOf="parent" />
 
         <Spinner
             android:id="@+id/room_spinner"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
             app:layout_constraintBottom_toTopOf="@+id/clear_button"

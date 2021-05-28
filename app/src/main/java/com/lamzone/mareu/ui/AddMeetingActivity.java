@@ -232,12 +232,16 @@ public class AddMeetingActivity extends AppCompatActivity implements DatePickerD
             @Override
             public void onClick(View v) {
                 String s = et_participants.getText().toString();
-                participants.add(s);
-                TextView tv = new TextView(v.getContext());
-                tv.setText(s);
-                tv.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,LinearLayout.LayoutParams.WRAP_CONTENT));
-                layout_participants.addView(tv);
-                et_participants.getText().clear();
+                if(!s.equals("")){
+                    participants.add(s);
+                    TextView tv = new TextView(v.getContext());
+                    tv.setText(s);
+                    tv.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,LinearLayout.LayoutParams.WRAP_CONTENT));
+                    layout_participants.addView(tv);
+                    et_participants.getText().clear();
+                } else {
+                    Toast.makeText(v.getContext(), "Impossible d'ajouter un nouveau participant : le champ est vide.", Toast.LENGTH_LONG).show();
+                }
             }
         });
     }
