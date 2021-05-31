@@ -2,12 +2,12 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item android:id="@+id/filter_date"
-        android:title="Filtrer par date"
+        android:title="@string/filterbydate"
         app:showAsAction="never"/>
     <item android:id="@+id/filter_room"
-        android:title="Filtrer par salle"
+        android:title="@string/filterbyroom"
         app:showAsAction="never"/>
     <item android:id="@+id/no_filter"
-        android:title="Toutes les réunions"
+        android:title="@string/nofilter"
         app:showAsAction="never"/>
 </menu>

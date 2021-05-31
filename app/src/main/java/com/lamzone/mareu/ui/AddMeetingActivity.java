@@ -222,8 +222,8 @@ public class AddMeetingActivity extends AppCompatActivity implements DatePickerD
                     apiService.addNewMeeting(meeting);
                     finish();
                 } else {
-                    CharSequence txt = "Tous les champs ne sont pas correctement remplis.";
-                    Toast.makeText(v.getContext(),txt,Toast.LENGTH_SHORT).show();
+                    String toast = getResources().getString(R.string.toast_fields_not_filled);
+                    Toast.makeText(v.getContext(),toast,Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -240,14 +240,15 @@ public class AddMeetingActivity extends AppCompatActivity implements DatePickerD
                     layout_participants.addView(tv);
                     et_participants.getText().clear();
                 } else {
-                    Toast.makeText(v.getContext(), "Impossible d'ajouter un nouveau participant : le champ est vide.", Toast.LENGTH_LONG).show();
+                    String toast = getResources().getString(R.string.toast_empty_participant);
+                    Toast.makeText(v.getContext(), toast, Toast.LENGTH_LONG).show();
                 }
             }
         });
     }
 
     /**
-     * link views and variables
+     * link views with variables
      */
     private void linkViews(){
         et_title = findViewById(R.id.add_et_title);
@@ -256,7 +257,7 @@ public class AddMeetingActivity extends AppCompatActivity implements DatePickerD
         et_end = findViewById(R.id.add_et_time_end);
         et_participants = findViewById(R.id.add_et_participants);
         spinner = findViewById(R.id.room_spinner);
-        button_confirm = findViewById(R.id.confirm_button);
+        button_confirm = findViewById(R.id.confirm_meeting_button);
         button_clear = findViewById(R.id.clear_button);
         button_participants = findViewById(R.id.button_add_participant);
         layout_participants = findViewById(R.id.layout_participants);

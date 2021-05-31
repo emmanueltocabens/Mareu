@@ -1,40 +1,26 @@
 package com.lamzone.mareu.ui;
 
-import android.view.View;
-import android.view.ViewGroup;
-import android.view.ViewParent;
-
-import androidx.test.core.app.ActivityScenario;
-import androidx.test.espresso.ViewInteraction;
+import androidx.test.espresso.Espresso;
 import androidx.test.espresso.action.ViewActions;
-import androidx.test.espresso.assertion.ViewAssertions;
-import androidx.test.espresso.matcher.ViewMatchers;
+import androidx.test.espresso.matcher.RootMatchers;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
-import com.lamzone.mareu.DI.DependencyInjector;
 import com.lamzone.mareu.R;
-import com.lamzone.mareu.service.MareuApiService;
 import com.lamzone.mareu.utils.RecyclerViewUtils;
+import com.lamzone.mareu.utils.TestUtils;
 
+import static androidx.test.espresso.Espresso.onData;
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
-import static androidx.test.espresso.action.ViewActions.scrollTo;
+import static androidx.test.espresso.action.ViewActions.closeSoftKeyboard;
+import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
-import static androidx.test.espresso.matcher.ViewMatchers.withClassName;
 import static androidx.test.espresso.matcher.ViewMatchers.withContentDescription;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
-import static androidx.test.espresso.matcher.ViewMatchers.withParent;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
-import static com.lamzone.mareu.utils.UItestUtils.childAtPosition;
-import static org.hamcrest.Matchers.allOf;
-import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.instanceOf;
 
-import org.hamcrest.Description;
-import org.hamcrest.Matcher;
-import org.hamcrest.Matchers;
-import org.hamcrest.TypeSafeMatcher;
-import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -48,114 +34,91 @@ import org.junit.runner.RunWith;
 @RunWith(AndroidJUnit4.class)
 public class MeetingListUI {
 
-    private int currentMeetingSize = 6;
-    private MareuApiService apiService;
-
+    private int baseMeetingSize = 6;
 
     @Rule
     public ActivityScenarioRule<MareuListActivity> mActivityRule = new ActivityScenarioRule<>(MareuListActivity.class);
 
-    @Before
-    public void init(){
-        ActivityScenario<MareuListActivity> scenario = mActivityRule.getScenario();
-        apiService = DependencyInjector.getNewInstanceApiService();
+    /**
+     * Assert that recycler view is displaying correctly, then deletes a meeting
+     */
+    @Test
+    public void recyclerViewTest(){
+        onView(withId(R.id.recyclerView)).check(new RecyclerViewUtils.ItemCount(baseMeetingSize));
+        onView(TestUtils.withRecyclerView(R.id.recyclerView)
+                .atPositionOnView(3, R.id.imageButton_meetingRecyclerViewItem_delete))
+                .perform(click());
+        onView(withId(R.id.recyclerView)).check(new RecyclerViewUtils.ItemCount(baseMeetingSize-1));
     }
 
+    /**
+     * navigate to addMeetingActivity, and go back to MeetingListActivity
+     */
     @Test
-    public void recyclerViewCorrectSize(){
-        onView(ViewMatchers.withId(R.id.recyclerView))
-                .check(new RecyclerViewUtils.ItemCount(currentMeetingSize));
-    }
-
-    @Test
-    public void navigateToAddMeetingIsWorking(){
+    public void navigationTest(){
+        onView(withId(R.id.recyclerView)).check(matches(isDisplayed()));
         onView(withId(R.id.fab_add_meeting)).perform(ViewActions.click());
-        onView(withId(R.id.add_et_title)).check(ViewAssertions.matches(ViewMatchers.isDisplayed()));
+        onView(withId(R.id.add_constraint_layout)).check(matches(isDisplayed()));
+        Espresso.pressBack();
+        onView(withId(R.id.recyclerView)).check(matches(isDisplayed()));
     }
 
-    //créé par espresso
+    /**
+     * navigate to addMeetingActivity and create a new meeting
+     */
     @Test
-    public void dateFilterIsWorking(){
+    public void addNewMeetingTest(){
+        //navigate to addmeeting
+        onView(withId(R.id.fab_add_meeting)).perform(ViewActions.click());
+
+        //fill title
+        onView(withId(R.id.add_et_title)).perform(ViewActions.typeText("Test meeting title"));
+
+        //open date/time pickers and confirm
+        onView(withId(R.id.add_et_date)).perform(click());
+        onView(withId(android.R.id.button1)).perform(click());
+        onView(withId(R.id.add_et_time_start)).perform(click());
+        onView(withId(android.R.id.button1)).perform(click());
+        onView(withId(R.id.add_et_time_end)).perform(click());
+        onView(withId(android.R.id.button1)).perform(click());
+
+        //add 3 new participants
+        onView(withId(R.id.add_et_participants)).perform(ViewActions.typeText("participant1@somemail.com"));
+        onView(withId(R.id.button_add_participant)).perform(click());
+        onView(withId(R.id.add_et_participants)).perform(ViewActions.typeText("participant2@somemail.com"));
+        onView(withId(R.id.button_add_participant)).perform(click());
+        onView(withId(R.id.add_et_participants)).perform(ViewActions.typeText("participant3@somemail.com"));
+        onView(withId(R.id.add_et_participants)).perform(closeSoftKeyboard());
+
+        //change room
+        onView(withId(R.id.room_spinner)).perform(click());
+        onData(instanceOf(String.class)).atPosition(3).perform(click());
+
+        //add the meeting
+        onView(withId(R.id.confirm_meeting_button)).perform(click());
+
+        //make sure we are back to home screen
+        onView(withId(R.id.recyclerView)).check(matches(isDisplayed()));
+    }
+
+    /**
+     * Go through each of the 3 filters and assert that recycler views shows the right amount of meetings
+     */
+    @Test
+    public void testAllFilters(){
+        onView(withContentDescription("More options")).perform(click());
+        onView(withText("Filtrer par date")).perform(click());
+        onView(withId(android.R.id.button1)).perform(ViewActions.click());
+        onView(withId(R.id.recyclerView)).check(new RecyclerViewUtils.ItemCount(6));
 
         onView(withContentDescription("More options")).perform(click());
+        onView(withText("Filtrer par salle")).perform(click());
+        onView(withText("Salle 1")).inRoot(RootMatchers.isDialog()).perform(click());
+        onView(withId(R.id.recyclerView)).check(new RecyclerViewUtils.ItemCount(2));
 
-        /*ViewInteraction overflowMenuButton = onView(
-                allOf(withContentDescription("More options"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(R.id.action_bar),
-                                        1),
-                                0),
-                        isDisplayed()));
-        overflowMenuButton.perform(click());*/
-
-        ViewInteraction materialTextView = onView(
-                allOf(withId(R.id.title), withText("Filtrer par date"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(R.id.content),
-                                        0),
-                                0),
-                        isDisplayed()));
-        materialTextView.perform(click());
-
-        onView(withId(android.R.id.button1)).perform(ViewActions.click());
-/*
-        ViewInteraction materialButton = onView(
-                allOf(withId(android.R.id.button1), withText("OK"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withClassName(is("android.widget.ScrollView")),
-                                        0),
-                                3)));
-        materialButton.perform(scrollTo(), click());*/
+        onView(withContentDescription("More options")).perform(click());
+        onView(withText("Toutes les réunions")).perform(click());
+        onView(withId(R.id.recyclerView)).check(new RecyclerViewUtils.ItemCount(6));
     }
-
-    @Test
-    public void roomFilterIsWorking(){
-        ViewInteraction overflowMenuButton = onView(
-                allOf(withContentDescription("More options"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(R.id.action_bar),
-                                        1),
-                                0),
-                        isDisplayed()));
-        overflowMenuButton.perform(click());
-
-        ViewInteraction materialTextView = onView(
-                allOf(withId(R.id.title), withText("Filtrer par salle"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(R.id.content),
-                                        0),
-                                0),
-                        isDisplayed()));
-        materialTextView.perform(click());
-    }
-
-    public void no_filterIsWorking(){
-        ViewInteraction overflowMenuButton = onView(
-                allOf(withContentDescription("More options"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(R.id.action_bar),
-                                        1),
-                                0),
-                        isDisplayed()));
-        overflowMenuButton.perform(click());
-
-        ViewInteraction materialTextView = onView(
-                allOf(withId(R.id.title), withText("Toutes les réunions"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(R.id.content),
-                                        0),
-                                0),
-                        isDisplayed()));
-        materialTextView.perform(click());
-    }
-
-
 
 }

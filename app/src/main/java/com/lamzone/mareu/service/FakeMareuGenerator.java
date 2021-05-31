@@ -27,16 +27,16 @@ public abstract class FakeMareuGenerator {
     );
 
     public static List<Room> FAKE_ROOMS = Arrays.asList(
-            new Room("salle 1", Color.RED),
-            new Room("salle 2", Color.BLUE),
-            new Room("salle 3", Color.GREEN),
-            new Room("salle 4", Color.GRAY),
-            new Room("salle 5", Color.CYAN),
-            new Room("salle 6", Color.BLACK),
-            new Room("salle 7", Color.YELLOW),
-            new Room("salle 8", Color.MAGENTA),
-            new Room("salle 9", Color.WHITE),
-            new Room("salle de conférence", Color.DKGRAY)
+            new Room("Salle 1", Color.RED),
+            new Room("Salle 2", Color.BLUE),
+            new Room("Salle 3", Color.GREEN),
+            new Room("Salle 4", Color.GRAY),
+            new Room("Salle 5", Color.CYAN),
+            new Room("Salle 6", Color.BLACK),
+            new Room("Salle 7", Color.YELLOW),
+            new Room("Salle 8", Color.MAGENTA),
+            new Room("Salle 9", Color.WHITE),
+            new Room("Salle de conférence", Color.DKGRAY)
     );
 
     public static List<String> FAKE_USERS_1 = Arrays.asList(

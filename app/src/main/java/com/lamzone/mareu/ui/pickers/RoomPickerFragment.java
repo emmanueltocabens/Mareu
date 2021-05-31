@@ -1,14 +1,8 @@
 package com.lamzone.mareu.ui.pickers;
 
 import android.app.Dialog;
-import android.app.TimePickerDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.widget.Adapter;
-import android.widget.ArrayAdapter;
-import android.widget.Spinner;
-import android.widget.SpinnerAdapter;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -18,13 +12,11 @@ import androidx.fragment.app.DialogFragment;
 import com.lamzone.mareu.DI.DependencyInjector;
 import com.lamzone.mareu.R;
 import com.lamzone.mareu.events.RoomSelectedEvent;
-import com.lamzone.mareu.model.Room;
 import com.lamzone.mareu.service.MareuApiService;
 import com.lamzone.mareu.utils.MareuUtils;
 
 import org.greenrobot.eventbus.EventBus;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class RoomPickerFragment extends DialogFragment {

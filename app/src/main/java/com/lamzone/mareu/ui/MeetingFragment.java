@@ -4,8 +4,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -14,16 +12,8 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.lamzone.mareu.DI.DependencyInjector;
 import com.lamzone.mareu.R;
-import com.lamzone.mareu.events.DeleteMeetingEvent;
-import com.lamzone.mareu.model.Meeting;
-import com.lamzone.mareu.service.MareuApiService;
 
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-
-import java.util.List;
 
 public class MeetingFragment extends Fragment {
 

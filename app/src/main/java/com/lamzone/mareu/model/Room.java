@@ -1,10 +1,5 @@
 package com.lamzone.mareu.model;
 
-import android.graphics.Color;
-
-import java.util.ArrayList;
-import java.util.List;
-
 public class Room {
 
     private static int nbSalles = 0;
