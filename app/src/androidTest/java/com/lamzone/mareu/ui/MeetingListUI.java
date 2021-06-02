@@ -102,23 +102,36 @@ public class MeetingListUI {
     }
 
     /**
-     * Go through each of the 3 filters and assert that recycler views shows the right amount of meetings
+     * click on overflow menu button, chose date filter, and assert that correct amount of meetings is displayed
      */
     @Test
-    public void testAllFilters(){
-        onView(withContentDescription("More options")).perform(click());
+    public void testFilterDate(){
+        Espresso.openContextualActionModeOverflowMenu();
         onView(withText("Filtrer par date")).perform(click());
         onView(withId(android.R.id.button1)).perform(ViewActions.click());
         onView(withId(R.id.recyclerView)).check(new RecyclerViewUtils.ItemCount(6));
+    }
 
-        onView(withContentDescription("More options")).perform(click());
+    /**
+     * click on overflow menu button, chose room filter, and assert that correct amount of meetings is displayed
+     */
+    @Test
+    public void testFilterRoom(){
+        Espresso.openContextualActionModeOverflowMenu();
         onView(withText("Filtrer par salle")).perform(click());
         onView(withText("Salle 1")).inRoot(RootMatchers.isDialog()).perform(click());
         onView(withId(R.id.recyclerView)).check(new RecyclerViewUtils.ItemCount(2));
+    }
 
-        onView(withContentDescription("More options")).perform(click());
+    /**
+     * click on overflow menu button, chose no filter, and assert that correct amount of meetings is displayed
+     */
+    @Test
+    public void testNoFilter(){
+        Espresso.openContextualActionModeOverflowMenu();
         onView(withText("Toutes les réunions")).perform(click());
         onView(withId(R.id.recyclerView)).check(new RecyclerViewUtils.ItemCount(6));
+
     }
 
 }
