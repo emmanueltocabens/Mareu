@@ -2,16 +2,16 @@ package com.lamzone.mareu.model;
 
 public class Room {
 
-    private static int nbSalles = 0;
+    private static int nbSalles = 0;//count rooms to generate ids
 
-    private int id; //identifiant de la salle
-    private String name; //nom de la salle
-    private int color;
+    private int id; //id of the room
+    private String name; //room display name
+    private final int color;//imageView color for this room
 
     /**
-     * Constructeur d'une salle
-     * par défaut la salle est libre
-     * @param roomName
+     * Constructor for a room
+     * @param roomName display name of the room
+     * @param color color that will help recognise the room
      */
     public Room(String roomName, int color){
         this.id = nbSalles;

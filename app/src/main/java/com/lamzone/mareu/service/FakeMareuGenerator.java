@@ -12,20 +12,6 @@ import java.util.List;
 
 public abstract class FakeMareuGenerator {
 
-
-    public static List<Integer> COLORS_LIST = Arrays.asList(
-            Color.RED,
-            Color.BLUE,
-            Color.GREEN,
-            Color.GRAY,
-            Color.CYAN,
-            Color.BLACK,
-            Color.YELLOW,
-            Color.MAGENTA,
-            Color.WHITE,
-            Color.DKGRAY
-    );
-
     public static List<Room> FAKE_ROOMS = Arrays.asList(
             new Room("Salle 1", Color.RED),
             new Room("Salle 2", Color.BLUE),

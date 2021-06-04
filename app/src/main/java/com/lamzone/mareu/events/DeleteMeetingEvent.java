@@ -3,7 +3,7 @@ package com.lamzone.mareu.events;
 import com.lamzone.mareu.model.Meeting;
 
 /**
- * fired when a meeting is deleted
+ * fired when delete imageButton is pressed
  */
 public class DeleteMeetingEvent {
 

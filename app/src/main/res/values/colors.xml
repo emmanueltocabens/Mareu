@@ -8,4 +8,5 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="red">#E10707</color>
+    <color name="mareu_card_view_background">#DADADA</color>
 </resources>

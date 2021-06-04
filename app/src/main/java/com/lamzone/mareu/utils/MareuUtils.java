@@ -13,8 +13,6 @@ import java.util.Locale;
 
 public class MareuUtils {
 
-    final Locale realLoc = Locale.getDefault();
-    final static Locale fakeLoc = Locale.FRANCE;
     static final String DATE_FORMAT_TIME = "HH:mm";
     static final String DATE_FORMAT_DATE = "dd-MM-yyyy";
 
@@ -72,7 +70,7 @@ public class MareuUtils {
      */
     public static String getDateString(Date date){
         StringBuilder sb = new StringBuilder();
-        DateFormat format = new SimpleDateFormat(DATE_FORMAT_DATE, fakeLoc);
+        DateFormat format = new SimpleDateFormat(DATE_FORMAT_DATE, Locale.getDefault());
         Calendar c = Calendar.getInstance();
         c.setTime(date);
         sb.append(format.format(c.getTime()));
@@ -89,7 +87,7 @@ public class MareuUtils {
         StringBuilder ret =  new StringBuilder();
         Calendar c = Calendar.getInstance();
         c.setTime(date);
-        DateFormat format = new SimpleDateFormat(DATE_FORMAT_TIME, fakeLoc);
+        DateFormat format = new SimpleDateFormat(DATE_FORMAT_TIME, Locale.getDefault());
         ret.append(format.format(c.getTime()));
         return ret.toString();
     }

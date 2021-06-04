@@ -16,8 +16,7 @@ public class DependencyInjector {
     }
 
     /**
-     * returns a new instance of apiService
-     * used for tests
+     * returns a new instance of apiService (test purpose)
      * @return
      */
     public static MareuApiService getNewInstanceApiService(){

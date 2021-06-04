@@ -2,11 +2,16 @@ package com.lamzone.mareu.ui;
 
 import androidx.test.espresso.Espresso;
 import androidx.test.espresso.action.ViewActions;
+import androidx.test.espresso.contrib.RecyclerViewActions;
 import androidx.test.espresso.matcher.RootMatchers;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
+import com.lamzone.mareu.DI.DependencyInjector;
 import com.lamzone.mareu.R;
+import com.lamzone.mareu.model.Meeting;
+import com.lamzone.mareu.service.MareuApiService;
+import com.lamzone.mareu.utils.DeleteViewAction;
 import com.lamzone.mareu.utils.RecyclerViewUtils;
 import com.lamzone.mareu.utils.TestUtils;
 
@@ -21,33 +26,40 @@ import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.instanceOf;
 
+import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import java.util.Calendar;
+
 
 /**
- * Unit Tests
+ * User Interface Tests
  *
  * @see <a href="http://d.android.com/tools/testing">Testing documentation</a>
  */
 @RunWith(AndroidJUnit4.class)
 public class MeetingListUI {
 
-    private int baseMeetingSize = 6;
+    private int baseMeetingSize = 0;
 
     @Rule
     public ActivityScenarioRule<MareuListActivity> mActivityRule = new ActivityScenarioRule<>(MareuListActivity.class);
 
+    @Before
+    public void init(){
+        mActivityRule.getScenario().onActivity(MareuListActivity::useNewApiService);
+        baseMeetingSize = DependencyInjector.getNewInstanceApiService().getAllMeetings().size();
+    }
+
     /**
-     * Assert that recycler view is displaying correctly, then deletes a meeting
+     * Assert that recycler view is displayed correctly, then delete a meeting
      */
     @Test
     public void recyclerViewTest(){
         onView(withId(R.id.recyclerView)).check(new RecyclerViewUtils.ItemCount(baseMeetingSize));
-        onView(TestUtils.withRecyclerView(R.id.recyclerView)
-                .atPositionOnView(3, R.id.imageButton_meetingRecyclerViewItem_delete))
-                .perform(click());
+        onView(withId(R.id.recyclerView)).perform(RecyclerViewActions.actionOnItemAtPosition(3,new DeleteViewAction()));
         onView(withId(R.id.recyclerView)).check(new RecyclerViewUtils.ItemCount(baseMeetingSize-1));
     }
 
@@ -131,7 +143,6 @@ public class MeetingListUI {
         Espresso.openContextualActionModeOverflowMenu();
         onView(withText("Toutes les réunions")).perform(click());
         onView(withId(R.id.recyclerView)).check(new RecyclerViewUtils.ItemCount(6));
-
     }
 
 }

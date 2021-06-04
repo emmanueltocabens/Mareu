@@ -8,6 +8,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.VisibleForTesting;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.lamzone.mareu.DI.DependencyInjector;
@@ -16,11 +17,13 @@ import com.lamzone.mareu.model.Meeting;
 import com.lamzone.mareu.service.MareuApiService;
 import com.lamzone.mareu.utils.MareuUtils;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.List;
 
 public class MareuRecyclerViewAdapter extends RecyclerView.Adapter<MareuRecyclerViewAdapter.MareuViewHolder> {
 
-    public class MareuViewHolder extends RecyclerView.ViewHolder{
+    public static class MareuViewHolder extends RecyclerView.ViewHolder{
 
         ImageView avatar;
         TextView title;
@@ -38,7 +41,7 @@ public class MareuRecyclerViewAdapter extends RecyclerView.Adapter<MareuRecycler
     }
 
     private final List<Meeting> rvMeetingList; //List of meetings
-    private MareuApiService apiService = DependencyInjector.getMareuApiService();
+    private final MareuApiService apiService = DependencyInjector.getMareuApiService();
 
     /**
      * RecyclerView adapter constructor
@@ -49,7 +52,7 @@ public class MareuRecyclerViewAdapter extends RecyclerView.Adapter<MareuRecycler
     }
 
     @Override
-    public MareuViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public @NotNull MareuViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater
                 .from(parent.getContext())
                 .inflate(R.layout.meeting_fragment,parent,false);
@@ -72,6 +75,8 @@ public class MareuRecyclerViewAdapter extends RecyclerView.Adapter<MareuRecycler
         });
 
     }
+
+
 
     @Override
     public int getItemCount() {

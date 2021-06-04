@@ -9,6 +9,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.DatePicker;
 
+import androidx.annotation.VisibleForTesting;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -18,6 +19,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.lamzone.mareu.DI.DependencyInjector;
 import com.lamzone.mareu.R;
 import com.lamzone.mareu.events.RoomSelectedEvent;
+import com.lamzone.mareu.model.Meeting;
 import com.lamzone.mareu.service.MareuApiService;
 import com.lamzone.mareu.ui.pickers.DatePickerFragment;
 import com.lamzone.mareu.ui.pickers.RoomPickerFragment;
@@ -25,7 +27,9 @@ import com.lamzone.mareu.ui.pickers.RoomPickerFragment;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 
 public class MareuListActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener {
@@ -35,6 +39,7 @@ public class MareuListActivity extends AppCompatActivity implements DatePickerDi
     private MareuApiService apiService;
     private MareuRecyclerViewAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
+    private List<Meeting> meetingList;
 
 
     @Override
@@ -68,7 +73,8 @@ public class MareuListActivity extends AppCompatActivity implements DatePickerDi
      * get the latest set of data using apiService for the recycler view adapter
      */
     public void initList(){
-        mAdapter = new MareuRecyclerViewAdapter(apiService.getAllMeetings());
+        meetingList = new ArrayList<>(apiService.getAllMeetings());
+        mAdapter = new MareuRecyclerViewAdapter(meetingList);
         mRecyclerView.setAdapter(mAdapter);
     }
 
@@ -146,5 +152,13 @@ public class MareuListActivity extends AppCompatActivity implements DatePickerDi
         mAdapter.notifyDataSetChanged();
         mAdapter = new MareuRecyclerViewAdapter(apiService.filterByRoom(event.room));
         mRecyclerView.setAdapter(mAdapter);
+    }
+
+    @VisibleForTesting
+    public void useNewApiService(){
+        apiService = DependencyInjector.getNewInstanceApiService();
+        meetingList.clear();
+        meetingList.addAll(apiService.getAllMeetings());
+        mAdapter.notifyDataSetChanged();
     }
 }
