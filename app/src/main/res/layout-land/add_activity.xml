@@ -30,7 +30,8 @@
             android:hint="@string/et_date_hint"
             android:inputType="date"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/add_et_title" />
+            app:layout_constraintTop_toBottomOf="@+id/add_et_title"
+            android:onClick="onDateClick"/>
 
         <EditText
             android:id="@+id/add_et_time_start"
@@ -43,7 +44,8 @@
             android:inputType="time"
             app:layout_constraintEnd_toEndOf="@+id/add_et_date"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/add_et_date" />
+            app:layout_constraintTop_toBottomOf="@+id/add_et_date"
+            android:onClick="onStartTimeClick"/>
 
         <EditText
             android:id="@+id/add_et_time_end"
@@ -57,7 +59,8 @@
             android:inputType="time"
             app:layout_constraintEnd_toEndOf="@+id/add_et_time_start"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/add_et_time_start" />
+            app:layout_constraintTop_toBottomOf="@+id/add_et_time_start"
+            android:onClick="onEndTimeClick"/>
 
         <EditText
             android:id="@+id/add_et_participants"
@@ -78,7 +81,8 @@
             android:layout_marginEnd="8dp"
             android:text="@string/text_button_add_participant"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/add_et_participants" />
+            app:layout_constraintTop_toTopOf="@+id/add_et_participants"
+            android:onClick="onAddParticipantButtonClick"/>
 
         <LinearLayout
             android:id="@+id/layout_participants"
@@ -99,7 +103,8 @@
             android:text="@string/text_button_clear"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/confirm_button"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            android:onClick="onClearButtonClick"/>
 
         <Spinner
             android:id="@+id/room_spinner"
@@ -116,6 +121,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
             android:text="@string/text_button_confirm"
+            android:onClick="onConfirmButtonClick"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/clear_button" />

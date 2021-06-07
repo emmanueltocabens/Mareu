@@ -8,7 +8,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.VisibleForTesting;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.lamzone.mareu.DI.DependencyInjector;
@@ -33,10 +32,10 @@ public class MareuRecyclerViewAdapter extends RecyclerView.Adapter<MareuRecycler
 
         public MareuViewHolder(@NonNull View itemView) {
             super(itemView);
-            title = itemView.findViewById(R.id.textView_meetingRecyclerViewItem_title);
-            subtitle = itemView.findViewById(R.id.textView_meetingRecyclerViewItem_subTitle);
+            title = itemView.findViewById(R.id.textView_cardView_title);
+            subtitle = itemView.findViewById(R.id.textView_cardView_subTitle);
             avatar = itemView.findViewById(R.id.imageView_meetingRecyclerViewAvatar);
-            button = itemView.findViewById(R.id.imageButton_meetingRecyclerViewItem_delete);
+            button = itemView.findViewById(R.id.delete_meeting_imageButton);
         }
     }
 

@@ -38,9 +38,6 @@ import java.util.List;
 
 public class AddMeetingActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
 
-    private Button button_confirm;
-    private Button button_participants;
-    private Button button_clear;
     private EditText et_title;
     private EditText et_date;
     private EditText et_start;
@@ -87,7 +84,6 @@ public class AddMeetingActivity extends AppCompatActivity implements DatePickerD
             }
         });
         et_title.setMaxLines(1);
-        setListeners();
         unlockRooms();
     }
 
@@ -171,81 +167,54 @@ public class AddMeetingActivity extends AppCompatActivity implements DatePickerD
         }
     }
 
-    /**
-     * adds onClickListener on all components
-     */
-    private void setListeners(){
-        et_date.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                DialogFragment datePicker = new DatePickerFragment();
-                datePicker.show(getSupportFragmentManager(),"date");
-            }
-        });
-
-        et_start.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                DialogFragment startTimePicker = new TimePickerFragment();
-                startTimePicker.show(getSupportFragmentManager(),"start");
-                picker = "start";
-            }
-        });
-
-        et_end.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                DialogFragment startTimePicker = new TimePickerFragment();
-                startTimePicker.show(getSupportFragmentManager(),"end");
-                picker = "end";
-            }
-        });
-
-        button_clear.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                et_title.getText().clear();
-                et_start.getText().clear();
-                et_end.getText().clear();
-                et_date.getText().clear();
-                et_participants.getText().clear();
-                participants.clear();
-                layout_participants.removeAllViews();
-            }
-        });
-
-        button_confirm.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(areAllFieldsFilledCorrectly()) {
-                    Meeting meeting = new Meeting(startDate, endDate, room, participants, et_title.getText().toString());
-                    apiService.addNewMeeting(meeting);
-                    finish();
-                } else {
-                    String toast = getResources().getString(R.string.toast_fields_not_filled);
-                    Toast.makeText(v.getContext(),toast,Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
-
-        button_participants.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String s = et_participants.getText().toString();
-                if(!s.equals("")){
-                    participants.add(s);
-                    TextView tv = new TextView(v.getContext());
-                    tv.setText(s);
-                    tv.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,LinearLayout.LayoutParams.WRAP_CONTENT));
-                    layout_participants.addView(tv);
-                    et_participants.getText().clear();
-                } else {
-                    String toast = getResources().getString(R.string.toast_empty_participant);
-                    Toast.makeText(v.getContext(), toast, Toast.LENGTH_LONG).show();
-                }
-            }
-        });
+    public void onDateClick(View v){
+        DialogFragment datePicker = new DatePickerFragment();
+        datePicker.show(getSupportFragmentManager(),"date");
     }
+    public void onStartTimeClick(View v){
+        DialogFragment startTimePicker = new TimePickerFragment();
+        startTimePicker.show(getSupportFragmentManager(),"start");
+        picker = "start";
+    }
+    public void onEndTimeClick(View v){
+        DialogFragment startTimePicker = new TimePickerFragment();
+        startTimePicker.show(getSupportFragmentManager(),"end");
+        picker = "end";
+    }
+    public void onAddParticipantButtonClick(View v){
+        String s = et_participants.getText().toString();
+        if(!s.equals("")){
+            participants.add(s);
+            TextView tv = new TextView(v.getContext());
+            tv.setText(s);
+            tv.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,LinearLayout.LayoutParams.WRAP_CONTENT));
+            layout_participants.addView(tv);
+            et_participants.getText().clear();
+        } else {
+            String toast = getResources().getString(R.string.toast_empty_participant);
+            Toast.makeText(v.getContext(), toast, Toast.LENGTH_LONG).show();
+        }
+    }
+    public void onClearButtonClick(View v){
+        et_title.getText().clear();
+        et_start.getText().clear();
+        et_end.getText().clear();
+        et_date.getText().clear();
+        et_participants.getText().clear();
+        participants.clear();
+        layout_participants.removeAllViews();
+    }
+    public void onConfirmButtonClick(View v){
+        if(areAllFieldsFilledCorrectly()) {
+            Meeting meeting = new Meeting(startDate, endDate, room, participants, et_title.getText().toString());
+            apiService.addNewMeeting(meeting);
+            finish();
+        } else {
+            String toast = getResources().getString(R.string.toast_fields_not_filled);
+            Toast.makeText(v.getContext(),toast,Toast.LENGTH_SHORT).show();
+        }
+    }
+
 
     /**
      * link views with variables
@@ -257,9 +226,6 @@ public class AddMeetingActivity extends AppCompatActivity implements DatePickerD
         et_end = findViewById(R.id.add_et_time_end);
         et_participants = findViewById(R.id.add_et_participants);
         spinner = findViewById(R.id.room_spinner);
-        button_confirm = findViewById(R.id.confirm_meeting_button);
-        button_clear = findViewById(R.id.clear_button);
-        button_participants = findViewById(R.id.button_add_participant);
         layout_participants = findViewById(R.id.layout_participants);
     }
 }

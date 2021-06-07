@@ -2,6 +2,7 @@ package com.lamzone.mareu.ui;
 
 import android.app.DatePickerDialog;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -58,15 +59,6 @@ public class MareuListActivity extends AppCompatActivity implements DatePickerDi
         mRecyclerView.setLayoutManager(mLayoutManager);
 
         initList();
-
-        //FAB
-        mFab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent().setClass(getApplicationContext(), AddMeetingActivity.class);
-                startActivity(i);
-            }
-        });
     }
 
     /**
@@ -144,6 +136,15 @@ public class MareuListActivity extends AppCompatActivity implements DatePickerDi
     }
 
     /**
+     * called when FAB is clicked
+     * @param v
+     */
+    public void onFABClick(View v){
+        Intent i = new Intent().setClass(getApplicationContext(), AddMeetingActivity.class);
+        startActivity(i);
+    }
+
+    /**
      * fired when the room filter button is pressed
      * @param event
      */
@@ -154,6 +155,9 @@ public class MareuListActivity extends AppCompatActivity implements DatePickerDi
         mRecyclerView.setAdapter(mAdapter);
     }
 
+    /**
+     * get new meeting list for tests
+     */
     @VisibleForTesting
     public void useNewApiService(){
         apiService = DependencyInjector.getNewInstanceApiService();
