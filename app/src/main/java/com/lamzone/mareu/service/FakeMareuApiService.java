@@ -10,30 +10,46 @@ import java.util.List;
 
 public class FakeMareuApiService implements MareuApiService {
 
-    private ArrayList<Meeting> meetingList = new ArrayList<>(FakeMareuGenerator.FAKE_MEETINGS);
-    private ArrayList<Meeting> filtered_meetingList = new ArrayList<>(FakeMareuGenerator.FAKE_MEETINGS);
-    private ArrayList<Room> rooms = new ArrayList<>(FakeMareuGenerator.FAKE_ROOMS);
+    private final ArrayList<Meeting> meetingList = new ArrayList<>(FakeMareuGenerator.FAKE_MEETINGS);
+    private final ArrayList<Meeting> filtered_meetingList = new ArrayList<>(FakeMareuGenerator.FAKE_MEETINGS);
+    private final ArrayList<Room> rooms = new ArrayList<>(FakeMareuGenerator.FAKE_ROOMS);
 
+    /**
+     * @inheritDoc
+     */
     @Override
     public List<Meeting> getAllMeetings() {
         return meetingList;
     }
 
+    /**
+     * @inheritDoc
+     */
     @Override
     public List<Room> getAllRooms() {
         return rooms;
     }
 
+    /**
+     * @inheritDoc
+     */
     @Override
     public void addNewMeeting(Meeting meeting) {
         meetingList.add(meeting);
     }
 
+
+    /**
+     * @inheritDoc
+     */
     @Override
     public void removeMeeting(Meeting meeting){
         meetingList.remove(meeting);
     }
 
+    /**
+     * @inheritDoc
+     */
     @Override
     public List<Meeting> filterByRoom(Room room){
         filtered_meetingList.clear();
@@ -45,6 +61,9 @@ public class FakeMareuApiService implements MareuApiService {
         return filtered_meetingList;
     }
 
+    /**
+     * @inheritDoc
+     */
     @Override
     public List<Meeting> filterByDate(Date date){
         filtered_meetingList.clear();
@@ -61,6 +80,9 @@ public class FakeMareuApiService implements MareuApiService {
         return filtered_meetingList;
     }
 
+    /**
+     * @inheritDoc
+     */
     @Override
     public List<Room> getAvailableRooms(Date start, Date end){
         List<Room> ret = new ArrayList<>(getAllRooms());
