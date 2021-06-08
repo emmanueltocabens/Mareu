@@ -74,7 +74,7 @@ public class AddMeetingActivity extends AppCompatActivity implements DatePickerD
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                room = apiService.getAllRooms().get(position);
+                room = displayedRooms.get(position);
             }
 
             @Override
