@@ -6,19 +6,16 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.lamzone.mareu.DI.DependencyInjector;
 import com.lamzone.mareu.R;
-import com.lamzone.mareu.events.DeleteMeetingEvent;
 import com.lamzone.mareu.model.Meeting;
 import com.lamzone.mareu.service.MareuApiService;
 import com.lamzone.mareu.utils.MareuUtils;
 
-import org.greenrobot.eventbus.EventBus;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
@@ -68,12 +65,9 @@ public class MareuRecyclerViewAdapter extends RecyclerView.Adapter<MareuRecycler
         holder.title.setText(MareuUtils.getMeetingDisplayName(meeting));
         holder.subtitle.setText(MareuUtils.getParticipantsAddresses(meeting));
         holder.avatar.setColorFilter(meeting.getRoom().getColor());
-        holder.button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                apiService.removeMeeting(meeting);
-                notifyDataSetChanged();
-            }
+        holder.button.setOnClickListener(v -> {
+            apiService.removeMeeting(meeting);
+            notifyDataSetChanged();
         });
 
     }

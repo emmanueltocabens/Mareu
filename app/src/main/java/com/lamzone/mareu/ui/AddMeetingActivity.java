@@ -7,7 +7,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -122,16 +121,14 @@ public class AddMeetingActivity extends AppCompatActivity implements DatePickerD
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()){
-            case android.R.id.home:
+        if(item.getItemId() == android.R.id.home)
                 finish();
-        }
         return super.onOptionsItemSelected(item);
     }
 
     /**
      * checks if all fields are filled correctly
-     * @return
+     * @return true if all fields are filled correctly
      */
     public boolean areAllFieldsFilledCorrectly() {
         boolean ret = true;

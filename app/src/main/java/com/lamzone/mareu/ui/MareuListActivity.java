@@ -2,7 +2,6 @@ package com.lamzone.mareu.ui;
 
 import android.app.DatePickerDialog;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -16,10 +15,8 @@ import androidx.fragment.app.DialogFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.lamzone.mareu.DI.DependencyInjector;
 import com.lamzone.mareu.R;
-import com.lamzone.mareu.events.DeleteMeetingEvent;
 import com.lamzone.mareu.events.RoomSelectedEvent;
 import com.lamzone.mareu.model.Meeting;
 import com.lamzone.mareu.service.MareuApiService;
@@ -29,7 +26,6 @@ import com.lamzone.mareu.ui.pickers.RoomPickerFragment;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
@@ -138,7 +134,6 @@ public class MareuListActivity extends AppCompatActivity implements DatePickerDi
 
     /**
      * called when FAB is clicked
-     * @param v
      */
     public void onFABClick(View v){
         Intent i = new Intent().setClass(getApplicationContext(), AddMeetingActivity.class);
@@ -147,7 +142,6 @@ public class MareuListActivity extends AppCompatActivity implements DatePickerDi
 
     /**
      * fired when the room filter button is pressed
-     * @param event
      */
     @Subscribe
     public void onRoomSelectedEvent(RoomSelectedEvent event){

@@ -1,7 +1,6 @@
 package com.lamzone.mareu.ui.pickers;
 
 import android.app.Dialog;
-import android.content.DialogInterface;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -33,11 +32,7 @@ public class RoomPickerFragment extends DialogFragment {
         for(int i = 0; i<list.size();i++){
             tab[i] = list.get(i);
         }
-        builder.setItems(tab,new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int position) {
-                EventBus.getDefault().post(new RoomSelectedEvent(apiService.getAllRooms().get(position)));
-            }
-        });
+        builder.setItems(tab, (dialog, position) -> EventBus.getDefault().post(new RoomSelectedEvent(apiService.getAllRooms().get(position))));
         return builder.create();
     }
 

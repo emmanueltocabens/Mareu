@@ -9,15 +9,15 @@ public class DependencyInjector {
 
     /**
      * returns the current apiService
-     * @return
+     * @return current MareuApiService instance
      */
     public static MareuApiService getMareuApiService(){
         return service;
     }
 
     /**
-     * returns a new instance of apiService (test purpose)
-     * @return
+     * returns a new instance of apiService (used for tests)
+     * @return new MareuApiService instance
      */
     public static MareuApiService getNewInstanceApiService(){
         return new FakeMareuApiService();

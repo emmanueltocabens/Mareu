@@ -103,21 +103,5 @@ public abstract class FakeMareuGenerator {
         return c.getTime();
     }
 
-    public static class testDate {
-        private final Calendar calendar;
-        private final Date date;
-
-        public testDate(int hour, int min){
-            calendar = Calendar.getInstance();
-            calendar.set(Calendar.HOUR_OF_DAY, hour);
-            calendar.set(Calendar.MINUTE, min);
-            date = calendar.getTime();
-        }
-
-        public Date getDate() {
-            return date;
-        }
-    }
-
 
 }
