@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.lamzone.mareu.DI.DependencyInjector;
 import com.lamzone.mareu.R;
+import com.lamzone.mareu.events.DeleteMeetingEvent;
 import com.lamzone.mareu.events.RoomSelectedEvent;
 import com.lamzone.mareu.model.Meeting;
 import com.lamzone.mareu.service.MareuApiService;
@@ -70,9 +71,13 @@ public class MareuListActivity extends AppCompatActivity implements DatePickerDi
     @Override
     protected void onResume() {
         super.onResume();
-        if(!EventBus.getDefault().isRegistered(this))
-            EventBus.getDefault().register(this);
         mAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(this);
     }
 
     @Override
@@ -151,8 +156,8 @@ public class MareuListActivity extends AppCompatActivity implements DatePickerDi
     }
 
     @Subscribe
-    public void onDeleteMeetingEvent(Meeting meeting){
-        apiService.removeMeeting(meeting);
+    public void onDeleteMeetingEvent(DeleteMeetingEvent event){
+        apiService.removeMeeting(event.meeting);
         meetingList = apiService.getAllMeetings();
         mAdapter.notifyDataSetChanged();
     }
