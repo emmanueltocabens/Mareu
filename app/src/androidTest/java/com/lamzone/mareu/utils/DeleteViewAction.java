@@ -2,6 +2,7 @@ package com.lamzone.mareu.utils;
 
 import android.view.View;
 
+import androidx.recyclerview.widget.RecyclerView;
 import androidx.test.espresso.UiController;
 import androidx.test.espresso.ViewAction;
 

@@ -9,11 +9,8 @@ import androidx.test.ext.junit.runners.AndroidJUnit4;
 
 import com.lamzone.mareu.DI.DependencyInjector;
 import com.lamzone.mareu.R;
-import com.lamzone.mareu.model.Meeting;
-import com.lamzone.mareu.service.MareuApiService;
 import com.lamzone.mareu.utils.DeleteViewAction;
 import com.lamzone.mareu.utils.RecyclerViewUtils;
-import com.lamzone.mareu.utils.TestUtils;
 
 import static androidx.test.espresso.Espresso.onData;
 import static androidx.test.espresso.Espresso.onView;
@@ -30,8 +27,6 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
-import java.util.Calendar;
 
 
 /**
@@ -50,7 +45,7 @@ public class MeetingListUI {
     @Before
     public void init(){
         mActivityRule.getScenario().onActivity(MareuListActivity::useNewApiService);
-        baseMeetingSize = DependencyInjector.getNewInstanceApiService().getAllMeetings().size();
+        baseMeetingSize = DependencyInjector.getMareuApiService().getAllMeetings().size();
     }
 
     /**

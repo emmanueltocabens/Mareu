@@ -8,6 +8,8 @@ import androidx.test.espresso.UiController;
 import androidx.test.espresso.ViewAction;
 import androidx.test.espresso.ViewAssertion;
 
+import com.lamzone.mareu.R;
+
 import org.hamcrest.Matcher;
 
 import static androidx.test.espresso.matcher.ViewMatchers.assertThat;
@@ -50,6 +52,29 @@ public class RecyclerViewUtils {
             public void perform(UiController uiController, View view) {
                 View v = view.findViewById(id);
                 v.performClick();
+            }
+        };
+    }
+
+    public static ViewAction clickChildRecyclerViewDeleteButton(final int id,final int position) {
+        return new ViewAction() {
+            @Override
+            public Matcher<View> getConstraints() {
+                return null;
+            }
+
+            @Override
+            public String getDescription() {
+                return "Click on a child view with specified id.";
+            }
+
+            @Override
+            public void perform(UiController uiController, View view) {
+                if(view instanceof RecyclerView){
+                    View child = ((RecyclerView)view).getChildAt(position);
+                    child.findViewById(R.id.delete_meeting_imageButton);
+                    child.performClick();
+                }
             }
         };
     }

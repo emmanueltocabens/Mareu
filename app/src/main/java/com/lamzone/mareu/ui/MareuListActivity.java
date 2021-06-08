@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.lamzone.mareu.DI.DependencyInjector;
 import com.lamzone.mareu.R;
+import com.lamzone.mareu.events.DeleteMeetingEvent;
 import com.lamzone.mareu.events.RoomSelectedEvent;
 import com.lamzone.mareu.model.Meeting;
 import com.lamzone.mareu.service.MareuApiService;
@@ -36,7 +37,6 @@ import java.util.List;
 public class MareuListActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener {
 
     private RecyclerView mRecyclerView;
-    private FloatingActionButton mFab;
     private MareuApiService apiService;
     private MareuRecyclerViewAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
@@ -47,10 +47,9 @@ public class MareuListActivity extends AppCompatActivity implements DatePickerDi
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.list_activity);
-        //bind views + api
 
-        mFab = findViewById(R.id.fab_add_meeting);
         mRecyclerView = findViewById(R.id.recyclerView);
+
         apiService = DependencyInjector.getMareuApiService();
 
         mRecyclerView.setHasFixedSize(true);
@@ -61,11 +60,13 @@ public class MareuListActivity extends AppCompatActivity implements DatePickerDi
         initList();
     }
 
+
+
     /**
      * get the latest set of data using apiService for the recycler view adapter
      */
     public void initList(){
-        meetingList = new ArrayList<>(apiService.getAllMeetings());
+        meetingList = apiService.getAllMeetings();
         mAdapter = new MareuRecyclerViewAdapter(meetingList);
         mRecyclerView.setAdapter(mAdapter);
     }

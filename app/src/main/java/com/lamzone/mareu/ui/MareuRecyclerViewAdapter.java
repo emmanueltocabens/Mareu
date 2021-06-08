@@ -6,16 +6,19 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.lamzone.mareu.DI.DependencyInjector;
 import com.lamzone.mareu.R;
+import com.lamzone.mareu.events.DeleteMeetingEvent;
 import com.lamzone.mareu.model.Meeting;
 import com.lamzone.mareu.service.MareuApiService;
 import com.lamzone.mareu.utils.MareuUtils;
 
+import org.greenrobot.eventbus.EventBus;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
