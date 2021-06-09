@@ -36,46 +36,7 @@ public class RecyclerViewUtils {
         }
     }
 
-    public static ViewAction clickChildView(final int id) {
-        return new ViewAction() {
-            @Override
-            public Matcher<View> getConstraints() {
-                return null;
-            }
-
-            @Override
-            public String getDescription() {
-                return "Click on a child view with specified id.";
-            }
-
-            @Override
-            public void perform(UiController uiController, View view) {
-                View v = view.findViewById(id);
-                v.performClick();
-            }
-        };
-    }
-
-    public static ViewAction clickChildRecyclerViewDeleteButton(final int id,final int position) {
-        return new ViewAction() {
-            @Override
-            public Matcher<View> getConstraints() {
-                return null;
-            }
-
-            @Override
-            public String getDescription() {
-                return "Click on a child view with specified id.";
-            }
-
-            @Override
-            public void perform(UiController uiController, View view) {
-                if(view instanceof RecyclerView){
-                    View child = ((RecyclerView)view).getChildAt(position);
-                    child.findViewById(R.id.delete_meeting_imageButton);
-                    child.performClick();
-                }
-            }
-        };
+    public static RecyclerViewMatcher withRecyclerView(int id){
+        return new RecyclerViewMatcher(id);
     }
 }

@@ -1,7 +1,12 @@
 package com.lamzone.mareu.ui;
 
+import android.view.InputDevice;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.ViewParent;
 
+import androidx.recyclerview.widget.RecyclerView;
 import androidx.test.espresso.Espresso;
 import androidx.test.espresso.action.ViewActions;
 import androidx.test.espresso.assertion.ViewAssertions;
@@ -14,6 +19,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4;
 import com.lamzone.mareu.DI.DependencyInjector;
 import com.lamzone.mareu.R;
 import com.lamzone.mareu.utils.DeleteViewAction;
+import com.lamzone.mareu.utils.RecyclerViewMatcher;
 import com.lamzone.mareu.utils.RecyclerViewUtils;
 
 import static androidx.test.espresso.Espresso.onData;
@@ -21,15 +27,21 @@ import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.action.ViewActions.closeSoftKeyboard;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
+import static androidx.test.espresso.matcher.ViewMatchers.hasDescendant;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withChild;
+import static androidx.test.espresso.matcher.ViewMatchers.withClassName;
 import static androidx.test.espresso.matcher.ViewMatchers.withContentDescription;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withParent;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.instanceOf;
+import static org.hamcrest.Matchers.is;
 
+import org.hamcrest.Description;
+import org.hamcrest.Matcher;
+import org.hamcrest.TypeSafeMatcher;
 import org.hamcrest.core.IsInstanceOf;
 import org.junit.Before;
 import org.junit.Rule;
@@ -57,12 +69,18 @@ public class MeetingListUI {
     }
 
     /**
-     * Assert that recycler view is displayed correctly, then delete a meeting
+     * Assert that recycler view is displayed correctly, then delete a meeting, then checks if the number of meetings displayed is correct
      */
     @Test
-    public void recyclerViewTest(){
+    public void deleteMeetingTest(){
         onView(withId(R.id.recyclerView)).check(new RecyclerViewUtils.ItemCount(baseMeetingSize));
-        onView(withId(R.id.recyclerView)).perform(RecyclerViewActions.actionOnItemAtPosition(3,new DeleteViewAction()));
+        onView(allOf(
+                isDisplayed(),
+                withClassName(is("androidx.appcompat.widget.AppCompatImageButton")),
+                withParent(withParent(RecyclerViewUtils.withRecyclerView(R.id.recyclerView).atPosition(3))),
+                withId(R.id.delete_meeting_imageButton)
+        )).perform(click());
+
         onView(withId(R.id.recyclerView)).check(new RecyclerViewUtils.ItemCount(baseMeetingSize-1));
     }
 
@@ -146,6 +164,25 @@ public class MeetingListUI {
         Espresso.openContextualActionModeOverflowMenu();
         onView(withText("Toutes les réunions")).perform(click());
         onView(withId(R.id.recyclerView)).check(new RecyclerViewUtils.ItemCount(6));
+    }
+
+    private static Matcher<View> childAtPosition(
+            final Matcher<View> parentMatcher, final int position) {
+
+        return new TypeSafeMatcher<View>() {
+            @Override
+            public void describeTo(Description description) {
+                description.appendText("Child at position " + position + " in parent ");
+                parentMatcher.describeTo(description);
+            }
+
+            @Override
+            public boolean matchesSafely(View view) {
+                ViewParent parent = view.getParent();
+                return parent instanceof ViewGroup && parentMatcher.matches(parent)
+                        && view.equals(((ViewGroup) parent).getChildAt(position));
+            }
+        };
     }
 
 }
