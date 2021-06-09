@@ -20,7 +20,8 @@ public class DependencyInjector {
      * @return new MareuApiService instance
      */
     public static MareuApiService getNewInstanceApiService(){
-        return new FakeMareuApiService();
+        service = new FakeMareuApiService();
+        return service;
     }
 
 }
