@@ -158,7 +158,7 @@ public class MareuListActivity extends AppCompatActivity implements DatePickerDi
     @Subscribe
     public void onDeleteMeetingEvent(DeleteMeetingEvent event){
         apiService.removeMeeting(event.meeting);
-        meetingList = apiService.getAllMeetings();
+        meetingList.remove(event.meeting);
         mAdapter.notifyDataSetChanged();
     }
 
